@@ -13,7 +13,10 @@ class MarketingSuperstore < Sinatra::Base
   register Sinatra::Flash
 
   LinkedIn.configure do |config|
-    config.redirect_uri  = 'http://localhost:9292/login/callback'
+
+    # @hostname = request.host || "https://marketing-superstore-events.herokuapp.com"
+    ENV['RACK_ENV'] == 'development' ? @hostname = 'http://localhost:9292' : @hostname = "https://marketing-superstore-events.herokuapp.com"
+    config.redirect_uri  = @hostname + '/login/callback'
   end
 
   get '/' do
