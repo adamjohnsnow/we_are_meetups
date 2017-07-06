@@ -1,7 +1,14 @@
-class LinkedInAuth
+require 'data_mapper'
 
-  CLIENT_ID = '77vy1ddqyfe6ll'
-  CLIENT_SECRET =	'vxzV4fDxzrX1p7h1'
-  REDIRECT_LOGIN = 'http://localhost:9292/login/callback'
+class LinkedInAuth
+  include DataMapper::Resource
+
+  property :id, Serial
+  property :client_id, String
+  property :client_secret, String
+
+  REDIRECT_LOGIN = 'http://localhost:9292'
+  HEROKU = "https://marketing-superstore-events.herokuapp.com"
+  ENV['RACK_ENV'] == 'development' ? HOSTNAME = REDIRECT_LOGIN : HOSTNAME = HEROKU
 
 end

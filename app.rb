@@ -13,22 +13,23 @@ class MarketingSuperstore < Sinatra::Base
   register Sinatra::Flash
 
   LinkedIn.configure do |config|
-
-    # @hostname = request.host || "https://marketing-superstore-events.herokuapp.com"
-    ENV['RACK_ENV'] == 'development' ? @hostname = 'http://localhost:9292' : @hostname = "https://marketing-superstore-events.herokuapp.com"
-    config.redirect_uri  = @hostname + '/login/callback'
+    config.redirect_uri  = LinkedInAuth::HOSTNAME + '/login/callback'
   end
 
   get '/' do
-    p session
-    oauth = LinkedIn::OAuth2.new(LinkedInAuth::CLIENT_ID, LinkedInAuth::CLIENT_SECRET)
+    session[:client_id] = LinkedInAuth.first.client_id
+    session[:client_secret] = LinkedInAuth.first.client_secret
+    oauth = LinkedIn::OAuth2.new(session[:client_id], session[:client_secret])
     @linkedin_string = oauth.auth_code_url
     erb :index
   end
 
   get '/login/callback' do
     code = params[:code]
-    session[:access_token] = LinkedIn::OAuth2.new(LinkedInAuth::CLIENT_ID, LinkedInAuth::CLIENT_SECRET).get_access_token(code)
+    session[:access_token] = LinkedIn::OAuth2.new(
+                            session[:client_id],
+                            session[:client_secret]
+                            ).get_access_token(code)
     redirect '/home'
 
   end
