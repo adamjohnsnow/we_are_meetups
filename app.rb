@@ -1,7 +1,9 @@
+require 'linkedin-oauth2'
 require 'sinatra/base'
 require 'sinatra/flash'
 require 'pry'
 require_relative './data_mapper_setup'
+require_relative './models/linkedin'
 
 ENV['RACK_ENV'] ||= 'development'
 
@@ -10,49 +12,34 @@ class MarketingSuperstore < Sinatra::Base
   set :session_secret, ENV['SESSION_SECRET'] || 'something'
   register Sinatra::Flash
 
+  LinkedIn.configure do |config|
+    config.redirect_uri  = 'http://localhost:9292/login/callback'
+  end
+
   get '/' do
+    p session
+    oauth = LinkedIn::OAuth2.new(LinkedInAuth::CLIENT_ID, LinkedInAuth::CLIENT_SECRET)
+    @linkedin_string = oauth.auth_code_url
     erb :index
   end
 
+  get '/login/callback' do
+    code = params[:code]
+    session[:access_token] = LinkedIn::OAuth2.new(LinkedInAuth::CLIENT_ID, LinkedInAuth::CLIENT_SECRET).get_access_token(code)
+    redirect '/home'
+
+  end
+
+
   get '/home' do
-    @user = session[:user]
-    @bookings = Booking.all(Booking.user_id => session[:user_id])
+    @api = LinkedIn::API.new(session[:access_token])
+
     erb :home
   end
 
-  post '/sign-in' do
-    @user = User.login(params)
-    bad_sign_in if @user.nil?
-    session[:user] = @user.firstname
-    session[:user_id] = @user.id
-    redirect '/home'
-  end
-
-  get '/sign-up' do
-    erb :new_user
-  end
-
-  post '/sign-up' do
-    params[:password] == params[:verify_password] ? register_user(params) : bad_password
-  end
-
-  private
-
-  def register_user(params)
-    @user = User.create(params[:firstname], params[:surname],
-    params[:email], params[:password])
-    session[:user] = @user.firstname
-    session[:user_id] = @user.id
-    redirect '/home'
-  end
-
-  def bad_password
-    flash.next[:notice] = 'your passwords did not match, try again'
+  get '/logout' do
+    session[:access_token] = nil
     redirect '/'
   end
 
-  def bad_sign_in
-    flash.next[:notice] = 'you could not be signed in, try again'
-    redirect '/'
-  end
 end

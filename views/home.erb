@@ -1,2 +1,6 @@
 <h1>Home</h1>
-<h2>Welcome back, <%= @user %></h2>
+<h2>Welcome back, <%= @api.profile.first_name %></h2>
+<h3><%= @api.profile.id %> <%= @api.profile.last_name %></h3>
+  <div><img src="<%= @api.picture_urls.all[0] %>" width="100"></div>
+  <%= @api.profile.headline %>
+  <div><a href="<%= @api.profile.site_standard_profile_request.url %>">LinkedIn Profile</a></div>

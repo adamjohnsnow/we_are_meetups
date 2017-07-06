@@ -1,12 +1,6 @@
 <h1>Welcome</h1>
 <div class="sign-in">
-  Existing Users - Sign In
-  <div><%= flash[:notice] %></div>
-  <form class="sign-in-form" action="/sign-in" method="post">
-    <input type="text" name="email address" placeholder="email address">
-    <input type="password" name="password" placeholder="password">
-    <input type="submit" name="Submit" value="submit">
-  </form>
-  <a href="/sign-up">New Users Register</a>
+
+  <a href="<%= @linkedin_string %>">Sign in with LinkedIn</a>
 
 </div>
