@@ -2,6 +2,7 @@ require 'linkedin-oauth2'
 require 'sinatra/base'
 require 'sinatra/flash'
 require 'pry'
+require 'date'
 require_relative './data_mapper_setup'
 require_relative './models/linkedin'
 
@@ -31,19 +32,12 @@ class MarketingSuperstore < Sinatra::Base
                             session[:client_secret]
                             ).get_access_token(code)
     redirect '/home'
-
   end
 
 
   get '/home' do
     @api = LinkedIn::API.new(session[:access_token])
-
     erb :home
-  end
-
-  get '/logout' do
-    session[:access_token] = nil
-    redirect '/'
   end
 
 end

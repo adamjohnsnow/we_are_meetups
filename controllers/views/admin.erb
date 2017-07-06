@@ -1,0 +1,15 @@
+<h1>Welcome back, <%= @user %></h1>
+
+<% if @events.count > 0 %>
+  <ul>
+    <% @events.each do |event| %>
+       <li><%= event.title %> : <%= event.date %> - <a href="/admin/manage?id=<%= event.id %>">Manage Event</a></li>
+    <% end %>
+  </ul>
+  <% else %>
+    You currently have no active events
+<% end %>
+<div>
+
+<p><a href="/new-event">New Event</a></p>
+<p><a href="/new-user">New User</a></p>
