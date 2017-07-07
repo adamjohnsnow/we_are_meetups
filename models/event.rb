@@ -9,7 +9,7 @@ class Event
   property :location, String
   property :postcode, String
   property :date, Date
-  property :time, Time
+  property :time, DateTime
 
   belongs_to :user
   has n, :primary_invitees, through: Resource

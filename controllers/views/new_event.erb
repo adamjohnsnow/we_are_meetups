@@ -1,9 +1,10 @@
 <form class="" action="/new-event" method="post">
-  <input type="text" name="title" placeholder="event title">
-  <input type="text" name="description" placeholder="description">
-  <input type="text" name="location" placeholder="address">
-  <input type="text" name="postcode" placeholder="postcode">
-  <input type="date" name="date">
-  <input type="time" name="time">
+<p> <input type="text" name="title" placeholder="event title"> </p>
+<p> <textarea name="description" cols="40" rows="3" placeholder="description"></textarea></p>
+<p> <input type="text" name="location" placeholder="address"></p>
+<p> <input type="text" name="postcode" placeholder="postcode"></p>
+<p> <input type="date" name="date">
+  <input type="time" name="time"></p>
+  <input type="hidden" name="user_id" value="<%= @user %>">
   <input type="submit" value="Create Event">
 </form>

@@ -22,19 +22,24 @@ class AdminRoutes < Sinatra::Base
   end
 
   get '/new-event' do
+    @user = session[:user_id]
     erb :new_event
   end
 
   post '/new-event' do
-    Event.create(
-      title: params[:title],
-      description: params[:description],
-      location: params[:location],
-      postcode: params[:postcode],
-      date: params[:date],
-      time: params[:time],
-      user_id: session[:user_id]
-      )
+    @event = Event.create(params)
+    redirect '/admin/home'
+  end
+
+  get '/admin/manage' do
+    @event = Event.get(params[:id])
+    erb :event_admin
+  end
+
+  post '/save-event' do
+    @event = Event.get(params[:id])
+    @event.update(params)
+    @event.save!
     redirect '/admin/home'
   end
 

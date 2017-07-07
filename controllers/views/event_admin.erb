@@ -1,0 +1,11 @@
+<%= @event.title %>
+<form class="" action="/save-event" method="post">
+  <input type="hidden" name="id" value="<%=@event.id%>">
+<p>  Title <input type="text" name="title" value="<%= @event.title %>"> </p>
+<p>  Description <input type="text" name="description" value="<%= @event.description %>"> </p>
+<p>  Location <input type="text" name="location" value="<%= @event.location %>"> </p>
+<p>  Postcode <input type="text" name="postcode" value="<%= @event.postcode %>"> </p>
+<p>  Date <input type="date" name="date" value="<%= @event.date %>"> </p>
+<p>  Time <input type="time" name="time" value="<%= @event.time.strftime("%H:%M") %>"> </p>
+<p>  <input type="submit" value="Save Event">
+</form>
