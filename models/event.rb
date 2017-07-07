@@ -18,8 +18,7 @@ class Event
   def send_email
     @send_to = Invite.all(:event_id => self.id, :response => 'pending')
     @send_to.each do |invite|
-      invite_address = invite.invitee.email
-      email = Email.send(invite_address)
+      email = Email.send(invite.id)
       email.status == "250" ? invite.response = 'sent' : invite.response = 'failed to send'
       invite.save!
     end

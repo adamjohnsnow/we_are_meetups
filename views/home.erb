@@ -1,6 +1,9 @@
 <h1>Home</h1>
-<h2>Welcome back, <%= @api.profile.first_name %></h2>
-<h3><%= @api.profile.id %> <%= @api.profile.last_name %></h3>
-  <div><img src="<%= @api.picture_urls.all[0] %>" width="100"></div>
-  <%= @api.profile.headline %>
-  <div><a href="<%= @api.profile.site_standard_profile_request.url %>">LinkedIn Profile</a></div>
+<h2>Welcome back, <%= @guest.first_name %></h2>
+<h3><%= @guest.first_name %> <%= @guest.last_name %></h3>
+  <div><img src="<%= @guest.linkedin_profile_pic %>" width="100"></div>
+  <%= @guest.linkedin_headline %>
+  <div><a href="<%= @guest.linkedin_url %>">LinkedIn Profile</a></div>
+Your invite:
+<h3><%= @invite.event.title %></h3>
+<%= @invite.event.date.strftime("%A %-d %B") %> at <%= @invite.event.time.strftime("%H:%M") %>

@@ -5,7 +5,7 @@ class Invite
 
   property :id, Serial
   property :response, String
-  property :primary, Boolean
+  property :invited_by, String
   property :reason, Text
 
   belongs_to :event
@@ -19,7 +19,7 @@ class Invite
       event_id: params[:id],
       reason: params[:reason],
       response: :pending,
-      primary: true
+      invited_by: 'admin'
       ) if @guest.invites(:event_id => params[:id]) == []
   end
 end
