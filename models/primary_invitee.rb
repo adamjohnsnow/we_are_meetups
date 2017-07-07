@@ -4,7 +4,7 @@ class Invitee
   include DataMapper::Resource
 
   property :id, Serial
-  property :email, String
+  property :email, String, :unique => true
   property :first_name, String
   property :last_name, String
   property :linkedin_id, String

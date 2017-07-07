@@ -1,0 +1,26 @@
+<h2><%= @event.title %> : <%= @event.date.strftime("%d/%m/%Y") %></h2>
+<% if @invites.count > 0 %>
+  <ul>
+    <% @invites.each do |invite| %>
+       <li>
+         <%= invite.invitee.email %> : <%= invite.response %>
+       </li>
+    <% end %>
+  </ul>
+  <% else %>
+    This event has no invites
+<% end %>
+<form class="" action="/send-emails" method="post">
+  <input type="hidden" name="id" value="<%=@event.id%>">
+  <input type="submit" value="Send emails to pending">
+</form>
+<div>
+  Add new invitee:
+<form class="" action="/new-invite" method="post">
+  <input type="hidden" name="id" value="<%=@event.id%>">
+  <p><input type="email" name="email" placeholder="email address"></p>
+  <p><textarea name="reason" cols="40" rows="3" placeholder="I am inviting [name] because..."></textarea></p>
+  <input type="submit" value="Add Invite">
+</form>
+</div>
+<a href="/admin/home">Done</a>

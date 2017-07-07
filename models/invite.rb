@@ -10,4 +10,16 @@ class Invite
 
   belongs_to :event
   belongs_to :invitee
+
+  def self.add_guest(params)
+    @guest = Invitee.first(:email => params[:email]) ||
+             Invitee.create(email: params[:email])
+    Invite.create(
+      invitee_id: @guest.id,
+      event_id: params[:id],
+      reason: params[:reason],
+      response: :pending,
+      primary: true
+      ) if @guest.invites(:event_id => params[:id]) == []
+  end
 end

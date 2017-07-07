@@ -1,3 +1,5 @@
+require_relative '../models/email'
+
 class AdminRoutes < Sinatra::Base
   enable :sessions
   set :session_secret, ENV['SESSION_SECRET'] || 'something'
@@ -43,6 +45,22 @@ class AdminRoutes < Sinatra::Base
     redirect '/admin/home'
   end
 
+  get '/admin/invites' do
+    @event = Event.get(params[:id])
+    @invites = Invite.all(:event_id => params[:id], :order => [:response.asc])
+    erb :invites
+  end
+
+  post '/new-invite' do
+    Invite.add_guest(params)
+    redirect "/admin/invites?id=#{params[:id]}"
+  end
+
+  post '/send-emails' do
+    @event = Event.get(params[:id])
+    @event.send_email
+    redirect "/admin/invites?id=#{params[:id]}"
+  end
   private
 
   def bad_sign_in
