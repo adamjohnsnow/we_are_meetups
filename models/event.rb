@@ -12,7 +12,6 @@ class Event
   property :time, DateTime
 
   belongs_to :user
-  has n, :primary_invitees, through: Resource
-  has n, :secondary_invitees, through: Resource
+  has n, :invites
 
 end

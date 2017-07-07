@@ -1,6 +1,6 @@
 require 'data_mapper'
 
-class PrimaryInvitee
+class Invitee
   include DataMapper::Resource
 
   property :id, Serial
@@ -12,5 +12,5 @@ class PrimaryInvitee
   property :linkedin_profile_pic, String
   property :linkedin_headline, String
 
-  has n, :events, through: Resource
+  has n, :invites
 end
