@@ -5,10 +5,10 @@ class Email
 attr_reader :status
 
   def self.send(invite_id)
+
     @email_account = LinkedInAuth.get(2)
     @invite = Invite.get(invite_id)
     ENV['RACK_ENV'] == 'development' ? @reply_url = LinkedInAuth::REDIRECT_LOGIN : @reply_url = LinkedInAuth::HEROKU
-
 
     msg = <<END_OF_MESSAGE
 From: Peter Kerwood's Amazing Events <your@mail.address>
@@ -29,7 +29,7 @@ on #{@invite.event.date.strftime("%A %-d %B")} from #{@invite.event.time.strftim
 Kindest regards,<br>
 <h3>The Marketing Superstore Team</h3></html>
 END_OF_MESSAGE
-  p msg
+
     smtp = Net::SMTP.new 'smtp.gmail.com', 587
     smtp.enable_starttls
     smtp.start('www.gmail.com', @email_account.client_id, @email_account.client_secret, :login) do

@@ -24,4 +24,29 @@ class Invite
       type: :primary
       ) if @guest.invites(:event_id => params[:id]) == []
   end
+
+  def self.add_secondary(params, invite_id)
+    response = Invite.get(invite_id)
+    response.update(response: params[:rsvp])
+    response.save!
+
+    if response.type == 'primary'
+      @guest = Invitee.first(:email => params[:guest_email]) ||
+               Invitee.create(email: params[:guest_email])
+
+      if @guest.invites(:event_id => params[:event_id]) == []
+      @invite = Invite.create(
+        invitee_id: @guest.id,
+        event_id: params[:event_id],
+        reason: params[:reason],
+        response: :pending,
+        invited_by: "#{Invitee.get(params[:invitee_id]).first_name} #{Invitee.get(params[:invitee_id]).last_name}",
+        type: :secondary
+        )
+        Email.send(@invite.id)
+      else
+        p 'already invited'
+      end
+    end
+  end
 end

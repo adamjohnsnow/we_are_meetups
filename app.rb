@@ -38,6 +38,11 @@ class MarketingSuperstore < Sinatra::Base
     erb :home
   end
 
+  post '/rsvp' do
+    Invite.add_secondary(params, session[:invite_id])
+    redirect '/home'
+  end
+
   private
   def update_invite
     @invite = Invite.get(session[:invite_id])
