@@ -13,6 +13,7 @@ else
 end
 
 p "Running on #{@database}"
+DataMapper::Property::String.length(255)
 DataMapper.setup(:default, ENV['DATABASE_URL'] || @database)
 DataMapper.finalize
 DataMapper.auto_upgrade!

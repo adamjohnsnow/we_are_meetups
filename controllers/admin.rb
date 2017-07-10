@@ -52,7 +52,7 @@ class AdminRoutes < Sinatra::Base
   end
 
   post '/new-invite' do
-    Invite.add_guest(params)
+    Invite.add_guest(params, session[:user_id])
     redirect "/admin/invites?id=#{params[:id]}"
   end
 
