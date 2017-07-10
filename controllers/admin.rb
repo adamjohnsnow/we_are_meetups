@@ -47,7 +47,9 @@ class AdminRoutes < Sinatra::Base
 
   get '/admin/invites' do
     @event = Event.get(params[:id])
-    @invites = Invite.all(:event_id => params[:id], :order => [:response.asc])
+    @accepteds = Invite.all(:event_id => params[:id], :response => 'Accepted')
+    @pendings = Invite.all(:event_id => params[:id], :response.not => ['Accepted', 'Declined'])
+    @declineds = Invite.all(:event_id => params[:id], :response => 'Declined')
     erb :invites
   end
 

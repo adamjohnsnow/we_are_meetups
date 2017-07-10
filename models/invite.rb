@@ -35,14 +35,14 @@ class Invite
                Invitee.create(email: params[:guest_email])
 
       if @guest.invites(:event_id => params[:event_id]) == []
-      @invite = Invite.create(
-        invitee_id: @guest.id,
-        event_id: params[:event_id],
-        reason: params[:reason],
-        response: :pending,
-        invited_by: "#{Invitee.get(params[:invitee_id]).first_name} #{Invitee.get(params[:invitee_id]).last_name}",
-        type: :secondary
-        )
+        @invite = Invite.create(
+          invitee_id: @guest.id,
+          event_id: params[:event_id],
+          reason: params[:reason],
+          response: :sent,
+          invited_by: "#{Invitee.get(params[:invitee_id]).first_name} #{Invitee.get(params[:invitee_id]).last_name}",
+          type: :secondary
+          )
         Email.send(@invite.id)
       else
         p 'already invited'
