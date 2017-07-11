@@ -1,0 +1,12 @@
+<h3>Add new admin</h3>
+<form action="/new-user" method="post">
+  <input type="text" name="firstname" placeholder="First Name">
+  <input type="text" name="surname" placeholder="Surname"><br>
+  <input type="email" name="email" placeholder="Email" size="43"><br>
+  <input type="password" name="password" placeholder="Password"><br>
+  <input type="password" name="verify_password" placeholder="Confirm Password"><br>
+  <input class="btn" type="submit" name="Create User">
+</form>
+<div class="flash">
+  <%= flash[:notice] %>
+</div>

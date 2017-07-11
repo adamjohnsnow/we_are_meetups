@@ -2,25 +2,27 @@
 	display: table;
 }
 .table-row {
+  border: 1px solid #e3e3e3;
 	display: table-row;
 }
 .table-cell {
-	border: 1px solid #999999;
 	display: table-cell;
 	padding: 6px 6px 6px 6px;
+  vertical-align: top;
 }
 .table-body {
 	display: table-row-group;
 }
 
 .photo {
-  width: 85px;
+  width: 70px;
+  text-align: right;
 }
 .linkedin {
-  width: 250px;
+  width: 400px;
 }
 .invite {
-  width: 250px;
+  width: 400px;
 }
 .flash {
   color: red;
@@ -58,5 +60,8 @@ body {
 }
 h1 {
   background-color: #3498db;
-  color: white; 
+  color: white;
+}
+.invite {
+  border: none;
 }

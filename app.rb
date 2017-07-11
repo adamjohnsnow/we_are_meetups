@@ -5,6 +5,7 @@ require 'pry'
 require 'date'
 require_relative './data_mapper_setup'
 require_relative './models/linkedin'
+require_relative './models/map'
 
 ENV['RACK_ENV'] ||= 'development'
 
@@ -34,6 +35,7 @@ class MarketingSuperstore < Sinatra::Base
 
   get '/home' do
     @invite = Invite.get(session[:invite_id])
+    @map = Map.make_link(@invite.event.location, @invite.event.postcode)
     @guest = @invite.invitee
     erb :home
   end

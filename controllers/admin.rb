@@ -63,10 +63,33 @@ class AdminRoutes < Sinatra::Base
     @event.send_email
     redirect "/admin/invites?id=#{params[:id]}"
   end
+
+  get '/new-user' do
+    erb :new_user
+  end
+
+  post '/new-user' do
+    binding.pry
+    mismatched_passwords if params[:password] != params[:verify_password]
+    user = User.create(params[:firstname], params[:surname], params[:email], params[:password])
+    bad_new_user unless user
+    redirect '/admin/home'
+  end
+
   private
 
+  def mismatched_passwords
+    flash.next[:notice] = 'Passwords did not match, try again'
+    redirect '/new-user'
+  end
+
+  def bad_new_user
+    flash.next[:notice] = 'User could not be registered, please try again'
+    redirect '/new-user'
+  end
+
   def bad_sign_in
-    flash.next[:notice] = 'you could not be signed in, try again'
+    flash.next[:notice] = 'You could not be signed in, try again'
     redirect '/admin/login'
   end
 end
