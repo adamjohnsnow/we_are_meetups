@@ -18,6 +18,7 @@ class AdminRoutes < Sinatra::Base
   end
 
   get '/admin/home' do
+    redirect '/admin/login' if !session[:user]
     @events = Event.all(:date.gte => Date.today)
     @user = session[:user]
     erb :admin
