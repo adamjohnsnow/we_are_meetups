@@ -1,12 +1,22 @@
-<%= @event.title %>
-<form class="" action="/save-event" method="post">
-  <input type="hidden" name="id" value="<%=@event.id%>">
-<p>  Title <input type="text" name="title" value="<%= @event.title %>"> </p>
-<p>  Description <textarea name="description" cols="40" rows="3"><%= @event.description %></textarea> </p>
-<p>  Location <input type="text" name="location" value="<%= @event.location %>"> </p>
-<p>  Postcode <input type="text" name="postcode" value="<%= @event.postcode %>"> </p>
-<p>  Date <input type="date" name="date" value="<%= @event.date %>"> </p>
-<p>  Time <input type="time" name="time" value="<%= @event.time.strftime("%H:%M") %>"> </p>
-<p>  <input class="btn" type="submit" value="Save Event"></p>
-</form>
-<%= @map %>
+<div class="table">
+  <div class="table-body">
+    <div class="table-row">
+      <div class="table-cell">
+        <h2><%= @event.title %></h2>
+        <form class="" action="/save-event" method="post">
+          <input type="hidden" name="id" value="<%=@event.id%>">
+          <p>  Title <input type="text" name="title" value="<%= @event.title %>"> </p>
+          <p>  Description <textarea name="description" cols="40" rows="3"><%= @event.description %></textarea> </p>
+          <p>  Location <input type="text" name="location" value="<%= @event.location %>"> </p>
+          <p>  Postcode <input type="text" name="postcode" value="<%= @event.postcode %>"> </p>
+          <p>  Date <input type="date" name="date" value="<%= @event.date %>"> </p>
+          <p>  Time <input type="time" name="time" value="<%= @event.time.strftime("%H:%M") %>"> </p>
+          <p>  <input class="btn" type="submit" value="Save Event"></p>
+        </form>
+      </div>
+      <div class="table-cell">
+        <%= @map %>
+      </div>
+    </div>
+  </div>
+</div>

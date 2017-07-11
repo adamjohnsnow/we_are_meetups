@@ -21,7 +21,7 @@ You have been invited by #{@invite.invited_by} to attend our next exciting netwo
 <h2>#{@invite.event.title}</h2>
 At:<strong> #{@invite.event.location}, #{@invite.event.postcode}</strong><br>
 on #{@invite.event.date.strftime("%A %-d %B")} from #{@invite.event.time.strftime("%H:%M")}
-<br><br>
+<br><i>#{@invite.event.description}</i><br><br>
 <strong>#{@invite.invited_by} said that they have invited you because:</strong><br>
 <i>"#{@invite.reason}"</i><br>
 <h3>Please respond by following <a href="#{@reply_url}/reply?invite=#{@invite.id}">this link</a> and logging in via LinkedIn</h3>
