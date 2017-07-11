@@ -1,4 +1,5 @@
 require_relative '../models/email'
+require_relative '../models/map'
 
 class AdminRoutes < Sinatra::Base
   enable :sessions
@@ -36,6 +37,7 @@ class AdminRoutes < Sinatra::Base
 
   get '/admin/manage' do
     @event = Event.get(params[:id])
+    @map = Map.make_link(@invite.event.location, @invite.event.postcode)
     erb :event_admin
   end
 
