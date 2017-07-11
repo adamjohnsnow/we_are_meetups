@@ -37,7 +37,7 @@ class AdminRoutes < Sinatra::Base
 
   get '/admin/manage' do
     @event = Event.get(params[:id])
-    @map = Map.make_link(@invite.event.location, @invite.event.postcode)
+    @map = Map.make_link(@event.location, @event.postcode)
     erb :event_admin
   end
 
