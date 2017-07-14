@@ -11,6 +11,7 @@ class Event
   property :postcode, String
   property :date, Date
   property :time, DateTime
+  property :end, DateTime
 
   belongs_to :user
   has n, :invites

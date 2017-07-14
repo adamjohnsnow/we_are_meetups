@@ -1,3 +1,17 @@
+<header class="intro-header" style="background-image: url('img/shutterstock_422347750.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="page-heading">
+                    <h1><%= @invite.event.title %></h1>
+                    <hr class="small">
+                    <span class="subheading"><%= @invite.event.date.strftime("%A %-d %B") %> <%= @invite.event.time.strftime("%H:%M") %>-<%= @invite.event.end.strftime("%H:%M") %></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
 <div class="table">
   <div class="table-body">
     <div class="table-row">
@@ -8,8 +22,8 @@
     <div class="table-row">
       <div class="table-cell invite">
         <h3><%= @invite.event.title %></h3>
-        <%= @invite.event.date.strftime("%A %-d %B") %> at <%= @invite.event.time.strftime("%H:%M") %><br><br>
-        <%= @map %>
+        <h4><%= @invite.event.date.strftime("%A %-d %B") %> at <%= @invite.event.time.strftime("%H:%M") %>-<%= @invite.event.end.strftime("%H:%M") %><br><br>
+        <%= @invite.event.location %>, <%= @invite.event.postcode.capitalize %></h4>
       </div>
       <div class="table-cell invite">
         <% if @invite.response == 'clicked link' %>
@@ -33,3 +47,4 @@
     </div>
   </div>
 </div>
+<%= @map %>

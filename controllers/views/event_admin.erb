@@ -10,7 +10,8 @@
           <p>  Location <input type="text" name="location" value="<%= @event.location %>"> </p>
           <p>  Postcode <input type="text" name="postcode" value="<%= @event.postcode %>"> </p>
           <p>  Date <input type="date" name="date" value="<%= @event.date %>"> </p>
-          <p>  Time <input type="time" name="time" value="<%= @event.time.strftime("%H:%M") %>"> </p>
+          <p>  Time <input type="time" name="time" value="<%= @event.time.strftime("%H:%M") %>">
+          <input type="time" name="end" value="<%= @event.end.strftime("%H:%M") %>"> </p>
           <p>  <input class="btn" type="submit" value="Save Event"></p>
         </form>
       </div>
