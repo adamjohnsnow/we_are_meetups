@@ -11,7 +11,7 @@ attr_reader :status
     ENV['RACK_ENV'] == 'development' ? @reply_url = LinkedInAuth::REDIRECT_LOGIN : @reply_url = LinkedInAuth::HEROKU
 
     msg = <<END_OF_MESSAGE
-From: Peter Kerwood's Amazing Events <your@mail.address>
+From: we are meetups <#{@email_account.client_id}>
 To: #{@invite.invitee.email}
 Subject: You have been invited to our next amazing event!
 Content-Type: text/html;
@@ -24,7 +24,7 @@ on #{@invite.event.date.strftime("%A %-d %B")} from #{@invite.event.time.strftim
 <br><i>#{@invite.event.description}</i><br><br>
 <strong>#{@invite.invited_by} said that they have invited you because:</strong><br>
 <i>"#{@invite.reason}"</i><br>
-<h3>Please respond by following <a href="#{@reply_url}/reply?invite=#{@invite.id}">this link</a> and logging in via LinkedIn</h3>
+<h3>Please respond by following <a href="#{@reply_url}/reply?invite=#{@invite.id}">this link</a> or logging into <a href="#{@reply_url}">your account</a> via LinkedIn</h3>
 <br>
 Kindest regards,<br>
 <h3>The Marketing Superstore Team</h3></html>
