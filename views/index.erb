@@ -1,6 +1,47 @@
-<h1>Welcome</h1>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<script>
+var token = '6033867.a321c67.b6a7c62475d7433faf9d4d5a0cfd8b6f',
+    username = 'pkerwood',
+    num_photos = 20;
+
+    $.ajax({
+      url: "https://igapi.ga/pkerwood/media?count=30",
+      dataType: 'jsonp',
+      type: 'GET',
+      data: {access_token: token, count: num_photos},
+      success: function(feed){
+        console.log(feed.items[0].images.standard_resolution.url);
+        for(x in feed.items){
+          $('#instagram-feed').append('<a href="'+feed.items[x].link+'"><img src="'+feed.items[x].images.standard_resolution.url+'" width="300"  height="300"</a>');
+        }
+          },
+      error: function(feed){
+        console.log(feed);
+      }
+    });
+
+</script>
+
+<header class="intro-header" style="background-image: url('img/shutterstock_422347750.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="page-heading">
+                    <h1>we are meetups</h1>
+                    <hr class="small">
+                    <span class="subheading">networking events for events professionals</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
 <div class="sign-in">
 
-  <a href="<%= @linkedin_string %>">Sign in with LinkedIn</a>
+  <a href="/reply">Sign in with LinkedIn</a>
 
+</div>
+
+<div id="instagram-feed">
 </div>

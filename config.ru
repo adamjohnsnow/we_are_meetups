@@ -1,5 +1,5 @@
 require_relative './app'
-require_relative './controllers/admin'
+require_relative './admin'
 
 run MarketingSuperstore
 use AdminRoutes

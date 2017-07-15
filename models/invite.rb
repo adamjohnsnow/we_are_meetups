@@ -19,7 +19,7 @@ class Invite
       invitee_id: @guest.id,
       event_id: params[:id],
       reason: params[:reason],
-      response: :pending,
+      response: 'Invite not sent',
       invited_by: "#{User.get(user_id).firstname} #{User.get(user_id).surname}",
       type: :primary
       ) if @guest.invites(:event_id => params[:id]) == []
@@ -39,7 +39,7 @@ class Invite
           invitee_id: @guest.id,
           event_id: params[:event_id],
           reason: params[:reason],
-          response: :sent,
+          response: 'Invite Sent',
           invited_by: "#{Invitee.get(params[:invitee_id]).first_name} #{Invitee.get(params[:invitee_id]).last_name}",
           type: :secondary
           )

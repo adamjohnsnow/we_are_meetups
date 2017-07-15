@@ -1,25 +1,25 @@
-require_relative '../models/email'
-require_relative '../models/map'
+require_relative './models/email'
+require_relative './models/map'
 
 class AdminRoutes < Sinatra::Base
   enable :sessions
   set :session_secret, ENV['SESSION_SECRET'] || 'something'
   register Sinatra::Flash
 
-  get '/admin/login' do
+  get '/admin-login' do
     erb :login
   end
 
-  post '/admin/login' do
+  post '/admin-login' do
     @user = User.login(params)
     bad_sign_in if @user.nil?
     session[:user] = @user.firstname
     session[:user_id] = @user.id
-    redirect '/admin/home'
+    redirect '/admin-home'
   end
 
-  get '/admin/home' do
-    redirect '/admin/login' if !session[:user]
+  get '/admin-home' do
+    redirect '/admin-login' if !session[:user]
     @events = Event.all(:date.gte => Date.today)
     @user = session[:user]
     erb :admin
@@ -32,10 +32,10 @@ class AdminRoutes < Sinatra::Base
 
   post '/new-event' do
     @event = Event.create(params)
-    redirect '/admin/home'
+    redirect '/admin-home'
   end
 
-  get '/admin/manage' do
+  get '/admin-manage' do
     @event = Event.get(params[:id])
     @map = Map.make_link(@event.location, @event.postcode)
     erb :event_admin
@@ -45,10 +45,10 @@ class AdminRoutes < Sinatra::Base
     @event = Event.get(params[:id])
     @event.update(params)
     @event.save!
-    redirect '/admin/home'
+    redirect '/admin-home'
   end
 
-  get '/admin/invites' do
+  get '/admin-invites' do
     @event = Event.get(params[:id])
     @accepteds = Invite.all(:event_id => params[:id], :response => 'Accepted')
     @pendings = Invite.all(:event_id => params[:id], :response.not => ['Accepted', 'Declined'])
@@ -58,13 +58,13 @@ class AdminRoutes < Sinatra::Base
 
   post '/new-invite' do
     Invite.add_guest(params, session[:user_id])
-    redirect "/admin/invites?id=#{params[:id]}"
+    redirect "/admin-invites?id=#{params[:id]}"
   end
 
   post '/send-emails' do
     @event = Event.get(params[:id])
     @event.send_email
-    redirect "/admin/invites?id=#{params[:id]}"
+    redirect "/admin-invites?id=#{params[:id]}"
   end
 
   get '/new-user' do
@@ -76,7 +76,7 @@ class AdminRoutes < Sinatra::Base
     mismatched_passwords if params[:password] != params[:verify_password]
     user = User.create(params[:firstname], params[:surname], params[:email], params[:password])
     bad_new_user unless user
-    redirect '/admin/home'
+    redirect '/admin-home'
   end
 
   private
@@ -93,6 +93,6 @@ class AdminRoutes < Sinatra::Base
 
   def bad_sign_in
     flash.next[:notice] = 'You could not be signed in, try again'
-    redirect '/admin/login'
+    redirect '/admin-login'
   end
 end

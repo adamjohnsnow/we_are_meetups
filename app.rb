@@ -18,9 +18,13 @@ class MarketingSuperstore < Sinatra::Base
     config.redirect_uri  = LinkedInAuth::HOSTNAME + '/login/callback'
   end
 
+  get '/' do
+    erb :index
+  end
+
   get '/reply' do
     session[:invite_id] = params[:invite]
-    update_invite
+    update_invite if params[:invite]
     @oauth = get_oauth
     @linkedin_string = @oauth.auth_code_url
     redirect @linkedin_string
@@ -30,13 +34,23 @@ class MarketingSuperstore < Sinatra::Base
     token = get_token(params[:code])
     @api = LinkedIn::API.new(token)
     update_invitee(@api)
-    redirect '/home'
+    if session[:invite_id] == nil
+      redirect '/home'
+    else
+      redirect '/invite'
+    end
   end
 
-  get '/home' do
+  get '/invite' do
     @invite = Invite.get(session[:invite_id])
     @map = Map.make_link(@invite.event.location, @invite.event.postcode)
     @guest = @invite.invitee
+    erb :invite
+  end
+
+  get '/home' do
+    @user = Invitee.get(session[:guest_id])
+    @invites = @user.invites.all
     erb :home
   end
 
@@ -57,9 +71,10 @@ class MarketingSuperstore < Sinatra::Base
 
   private
   def update_invite
-    @invite = Invite.get(session[:invite_id])
-    @invite.update(response: 'clicked link')
-    @invite.save!
+    p "session invite:#{session[:invite_id]}"
+      @invite = Invite.get(session[:invite_id])
+      @invite.update(response: 'Invite Recieved')
+      @invite.save!
   end
 
   def get_oauth
@@ -75,7 +90,7 @@ class MarketingSuperstore < Sinatra::Base
   end
 
   def update_invitee(linkedin_data)
-    @invitee = Invite.get(session[:invite_id]).invitee
+    @invitee = Invitee.first_or_create(:email => linkedin_data.profile.email_address)
     @invitee.update(
     first_name: linkedin_data.profile.first_name,
     last_name: linkedin_data.profile.last_name,
@@ -85,5 +100,6 @@ class MarketingSuperstore < Sinatra::Base
     linkedin_headline: linkedin_data.profile.headline
     )
     @invitee.save!
+    session[:guest_id] = @invitee.id
   end
 end

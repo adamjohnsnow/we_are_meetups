@@ -1,14 +1,13 @@
+<div class="admin-header"></div>
+
 <h2>Welcome back, <%= @user %></h2>
 
 <% if @events.count > 0 %>
-  <ul>
     <% @events.each do |event| %>
-       <li><%= event.title %> : <%= event.date.strftime("%d/%m/%Y") %> -
-         <a href="/admin/manage?id=<%= event.id %>">Manage Event</a> -
-         <a href="/admin/invites?id=<%= event.id %>">Invites</a>
-       </li>
+        <%= event.title %> : <%= event.date.strftime("%d/%m/%Y") %> -
+         <a href="/admin-manage?id=<%= event.id %>">Manage Event</a> -
+         <a href="/admin-invites?id=<%= event.id %>">Invites</a><br>
     <% end %>
-  </ul>
   <% else %>
     You currently have no active events
 <% end %>

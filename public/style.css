@@ -29,6 +29,20 @@
   font-style: oblique;
 }
 
-.invite {
-  border: none;
+ body{
+	 text-align: center;
+ }
+
+.sign-in {
+	padding-bottom: 40px;
+}
+
+.admin-header{
+	background: #ffc578;
+	background: -moz-linear-gradient(-45deg, #ffc578 0%, #b8d378 33%, #f28a8a 46%, #fb9d23 100%);
+	background: -webkit-linear-gradient(-45deg, #ffc578 0%,#b8d378 33%,#f28a8a 46%,#fb9d23 100%);
+	background: linear-gradient(135deg, #ffc578 0%,#b8d378 33%,#f28a8a 46%,#fb9d23 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffc578', endColorstr='#fb9d23',GradientType=1 );
+	height: 60px;
+	margin-bottom: 30px;
 }

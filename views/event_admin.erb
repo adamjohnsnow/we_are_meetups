@@ -1,3 +1,5 @@
+<div class="admin-header"></div>
+
 <div class="table">
   <div class="table-body">
     <div class="table-row">
@@ -10,7 +12,7 @@
           <p>  Location <input type="text" name="location" value="<%= @event.location %>"> </p>
           <p>  Postcode <input type="text" name="postcode" value="<%= @event.postcode %>"> </p>
           <p>  Date <input type="date" name="date" value="<%= @event.date %>"> </p>
-          <p>  Time <input type="time" name="time" value="<%= @event.time.strftime("%H:%M") %>">
+          <p>  Time <input type="time" name="time" value="<%= @event.time.strftime("%H:%M") %>"> to 
           <input type="time" name="end" value="<%= @event.end.strftime("%H:%M") %>"> </p>
           <p>  <input class="btn" type="submit" value="Save Event"></p>
         </form>
