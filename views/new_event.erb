@@ -1,13 +1,18 @@
 <div class="admin-header"></div>
-
-<form class="" action="/new-event" method="post">
-<p> <input type="text" name="title" placeholder="event title"> </p>
-<p> <textarea name="description" cols="40" rows="3" placeholder="description"></textarea></p>
-<p> <input type="text" name="location" placeholder="address"></p>
-<p> <input type="text" name="postcode" placeholder="postcode"></p>
-<p> <input type="date" name="date">
-  <input type="time" name="time"> to 
-  <input type="time" name="end"></p>
+<h2>Create New Event</h2>
+<form class="white" action="/new-event" method="post">
+  <p> <input type="text" name="title" placeholder="event title" size="50"> </p>
+  <p> <input type="date" name="date">
+    <input type="time" name="time"> to
+    <input type="time" name="end">
+  </p>
+  <p> <input type="text" name="location" placeholder="address" size="50"></p>
+  <p> <input type="text" name="postcode" placeholder="postcode" size="10"></p>
+  <p>
+    <textarea name="description" cols="50" rows="3" placeholder="description"></textarea>
+  </p>
+  <input type="text" name="image" value="img/shutterstock_422347750.jpg" size="35"><br><br>
   <input type="hidden" name="user_id" value="<%= @user %>">
   <input class="btn" type="submit" value="Create Event">
-</form>
+</form><br>
+<a href="/admin-home">Cancel</a>

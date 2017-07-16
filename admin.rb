@@ -21,6 +21,7 @@ class AdminRoutes < Sinatra::Base
   get '/admin-home' do
     redirect '/admin-login' if !session[:user]
     @events = Event.all(:date.gte => Date.today)
+    @past_events = Event.all(:date.lt => Date.today)
     @user = session[:user]
     erb :admin
   end
@@ -37,6 +38,9 @@ class AdminRoutes < Sinatra::Base
 
   get '/admin-manage' do
     @event = Event.get(params[:id])
+    @accepteds = Invite.all(:event_id => params[:id], :response => 'Accepted')
+    @pendings = Invite.all(:event_id => params[:id], :response.not => ['Accepted', 'Declined'])
+    @declineds = Invite.all(:event_id => params[:id], :response => 'Declined')
     @map = Map.make_link(@event.location, @event.postcode)
     erb :event_admin
   end
@@ -48,23 +52,15 @@ class AdminRoutes < Sinatra::Base
     redirect '/admin-home'
   end
 
-  get '/admin-invites' do
-    @event = Event.get(params[:id])
-    @accepteds = Invite.all(:event_id => params[:id], :response => 'Accepted')
-    @pendings = Invite.all(:event_id => params[:id], :response.not => ['Accepted', 'Declined'])
-    @declineds = Invite.all(:event_id => params[:id], :response => 'Declined')
-    erb :invites
-  end
-
   post '/new-invite' do
     Invite.add_guest(params, session[:user_id])
-    redirect "/admin-invites?id=#{params[:id]}"
+    redirect "/admin-manage?id=#{params[:id]}"
   end
 
   post '/send-emails' do
     @event = Event.get(params[:id])
     @event.send_email
-    redirect "/admin-invites?id=#{params[:id]}"
+    redirect "/admin-manage?id=#{params[:id]}"
   end
 
   get '/new-user' do
@@ -72,13 +68,16 @@ class AdminRoutes < Sinatra::Base
   end
 
   post '/new-user' do
-    binding.pry
     mismatched_passwords if params[:password] != params[:verify_password]
     user = User.create(params[:firstname], params[:surname], params[:email], params[:password])
     bad_new_user unless user
     redirect '/admin-home'
   end
 
+  get '/admin-users' do
+    @users = Invitee.all(:last_name.like => '%' + params[:surname] + '%')
+    erb :users
+  end
   private
 
   def mismatched_passwords

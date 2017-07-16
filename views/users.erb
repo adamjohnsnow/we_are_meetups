@@ -1,0 +1,15 @@
+<div class="admin-header"></div>
+<h2> User Search </h2>
+<form class="" action="/admin-users" method="get">
+  <input type="text" name="surname" placeholder="Surname">
+  <input type="submit" value="Search">
+</form>
+ <% @users.each do |user| %>
+<div class="container">
+  <div class="col-sm-1 photo"><img src="<%= user.linkedin_profile_pic %>" width="65"></div>
+  <div class="col-sm-4">
+    <strong><%= user.first_name %> <%= user.last_name %></strong><br>
+    <%= user.linkedin_headline %>
+  </div>
+</div>
+  <% end %>

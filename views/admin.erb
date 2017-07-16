@@ -1,16 +1,39 @@
 <div class="admin-header"></div>
 
 <h2>Welcome back, <%= @user %></h2>
+<div class="container-fluid">
+  <div class="col-sm-3"></div>
+  <div class="col-sm-2">
+    <a href="/admin-users?surname=">Search Users</a>
+  </div>
+  <div class="col-sm-2">
+    <a href="/new-event">Create New Event</a>
+  </div>
+  <div class="col-sm-2">
+    <a href="/new-user">Create New Admin</a>
+  </div>
+  <div class="col-sm-3"></div>
+</div>
 
+<div class="container white">
+<h3>Upcoming Events</h3>
 <% if @events.count > 0 %>
     <% @events.each do |event| %>
-        <%= event.title %> : <%= event.date.strftime("%d/%m/%Y") %> -
-         <a href="/admin-manage?id=<%= event.id %>">Manage Event</a> -
-         <a href="/admin-invites?id=<%= event.id %>">Invites</a><br>
+      <a href="/admin-manage?id=<%= event.id %>">
+        <strong>  <%= event.title %> </strong>: <%= event.date.strftime("%d/%m/%Y") %>
+      </a><br>
     <% end %>
   <% else %>
     You currently have no active events
 <% end %>
-
-<p><a href="/new-event">New Event</a></p>
-<p><a href="/new-user">New User</a></p>
+<h3>Past Events</h3>
+<% if @past_events.count > 0 %>
+    <% @past_events.each do |event| %>
+      <a href="/admin-manage?id=<%= event.id %>">
+        <strong>  <%= event.title %> </strong>: <%= event.date.strftime("%d/%m/%Y") %>
+      </a><br>
+    <% end %>
+  <% else %>
+    You currently have no past events
+<% end %>
+</div>

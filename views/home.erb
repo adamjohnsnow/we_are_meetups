@@ -13,16 +13,25 @@
 </header>
 
 </body>
+<div class="container white">
+
   <% if @invites.count > 0 %>
-  <h2> Your invites: </h2>
+  <h3> your invites </h3>
     <% @invites.each do |invite| %>
-      <div class="container invite-list" style="background-image: url('img/events.jpg'); vertical-align: middle; height: 120px; width: 600px;">
+
+      <div class="container">
+      <div class="col-lg-3"></div>
+        <a href="/invites?id=<%= invite.id%>">
+      <div class="col-lg-6 invite-list" style="background-image: url(<%= invite.event.image %>); vertical-align: middle;">
         <h3><%= invite.event.title %></h3>
           <%= invite.event.date.strftime("%d/%m/%Y") %>, <%= invite.event.time.strftime("%H:%M") %>-<%= invite.event.end.strftime("%H:%M") %>
-            <br>Your RSVP: <%= invite.response %>
+            <br>Your RSVP: <%= invite.response %><br><br>
+      </div></a>
+      <div class="col-lg-3"></div>
       </div><br>
     <% end%>
   <% else %>
   You don't currently have any invitations.<br> Register your interest in future events by clicking /here/
   <% end %>
+</div>
 </body>

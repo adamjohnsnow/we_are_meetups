@@ -7,6 +7,7 @@ body {
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 20px;
   color: #333333;
+  background-color: #efefef;
 }
 p {
   line-height: 1.5;
@@ -164,7 +165,7 @@ hr.small {
   .intro-header .site-heading,
   .intro-header .post-heading,
   .intro-header .page-heading {
-    padding: 150px 0;
+    padding: 60px 0;
   }
 }
 .intro-header .site-heading,
@@ -344,7 +345,7 @@ form .row:first-child .floating-label-form-group {
   font-weight: 800;
   letter-spacing: 1px;
   border-radius: 0;
-  padding: 15px 25px;
+  padding: 10px 15px;
 }
 .btn-lg {
   font-size: 16px;

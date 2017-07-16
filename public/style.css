@@ -17,12 +17,12 @@
 .photo {
   width: 70px;
   text-align: right;
+	vertical-align: middle;
 }
-.linkedin {
-  width: 400px;
-}
+
 .invite {
-  width: 400px;
+  text-align: justify;
+	background-color: white;
 }
 .flash {
   color: red;
@@ -45,4 +45,19 @@
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffc578', endColorstr='#fb9d23',GradientType=1 );
 	height: 60px;
 	margin-bottom: 30px;
+}
+.instapic {
+	padding: 4px 4px 4px 4px;
+}
+#instagram-feed {
+ padding-top: 15px;
+}
+
+.invite-list{
+	color: white;
+}
+
+.white{
+	background-color: white;
+	padding: 5px 5px 5px 5px;
 }

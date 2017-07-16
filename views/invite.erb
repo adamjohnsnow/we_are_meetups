@@ -1,4 +1,4 @@
-<header class="intro-header" style="background-image: url('img/shutterstock_422347750.jpg')">
+<header class="intro-header" style="background-image: url(<%= @invite.event.image %>)">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -12,39 +12,37 @@
     </div>
 </header>
 
-<div class="table">
-  <div class="table-body">
-    <div class="table-row">
-      <div class="table-cell photo"><img src="<%= @guest.linkedin_profile_pic %>" width="100"></div>
-      <div class="table-cell invite"><h3>Hello, <%= @guest.first_name %> <%= @guest.last_name %></h3><%= @guest.linkedin_headline %></div>
-    </div>
-
-    <div class="table-row">
-      <div class="table-cell invite">
+<div class="container invite">
+  <div class="col-sm-6">
         <h3><%= @invite.event.title %></h3>
-        <h4><%= @invite.event.date.strftime("%A %-d %B") %> at <%= @invite.event.time.strftime("%H:%M") %>-<%= @invite.event.end.strftime("%H:%M") %><br><br>
-        <%= @invite.event.location %>, <%= @invite.event.postcode.capitalize %></h4>
-      </div>
-      <div class="table-cell invite">
-        <% if @invite.response == 'clicked link' %>
+        <h4>event description</h4>
+        <i> <%= @invite.event.description %> </i><br>
+        <h4>your rsvp</h4>
+        <% if @invite.response == 'Invite Received' %>
         <form action="/rsvp" method="post">
           <input type="hidden" name="invitee_id" value="<%= @invite.invitee.id %>">
           <input type="hidden" name="event_id" value="<%= @invite.event.id %>">
-          <input type="radio" name="rsvp" value="Accepted"><strong>Accept</strong></input><br>
+          <input type="radio" name="rsvp" value="Accepted"> i accept</input><br>
           <% if @invite.type == 'primary' %>
-          As a primary invitee to this event, please bring a guest!<br>
+          <i>as a primary invitee to this event, please bring a guest!</i><br>
           <div class="flash"><%= flash[:notice] %></div>
-          <input type="email" name="guest_email" size="55" placeholder="To accept this invitation, enter your guests email address"><br>
-          <p><textarea name="reason" cols="45" rows="3" placeholder="I am inviting [name] because..."></textarea></p>
+          <input class="input-sm" type="email" name="guest_email" size="55" placeholder="To accept this invitation, enter your guests email address"><br>
+          <p><textarea class="input-sm" name="reason" cols="54" rows="3" placeholder="I am inviting [name] because..."></textarea></p>
           <% end %>
-          <input type="radio" name="rsvp" value="Declined"><strong>Decline</strong></input><br>
+          <input type="radio" name="rsvp" value="Declined"> i decline</input><br><br>
           <input class="btn" type="submit" value="RSVP">
         </form>
         <% else %>
         <br><strong><%= @invite.response %></strong>
         <% end %>
       </div>
-    </div>
-  </div>
-</div>
-<%= @map %>
+      <div class="col-sm-6">
+            <h4>date & time</h4>
+            <%= @invite.event.date.strftime("%A %-d %B") %> at <%= @invite.event.time.strftime("%H:%M") %>-<%= @invite.event.end.strftime("%H:%M") %><br>
+            <h4>venue</h4>
+            <%= @invite.event.location %>, <%= @invite.event.postcode.capitalize %>
+            <h4>map</h4>
+            <%= @map %>
+      </div>
+
+</div><br>

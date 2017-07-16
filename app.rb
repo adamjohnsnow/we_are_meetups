@@ -3,6 +3,7 @@ require 'sinatra/base'
 require 'sinatra/flash'
 require 'pry'
 require 'date'
+require 'open-uri'
 require_relative './data_mapper_setup'
 require_relative './models/linkedin'
 require_relative './models/map'
@@ -33,12 +34,18 @@ class MarketingSuperstore < Sinatra::Base
   get '/login/callback' do
     token = get_token(params[:code])
     @api = LinkedIn::API.new(token)
-    update_invitee(@api)
+    email_query = LinkedInAuth::EMAIL_QUERY + token.token + "&format=json"
+    update_invitee(@api, email_query)
     if session[:invite_id] == nil
       redirect '/home'
     else
       redirect '/invite'
     end
+  end
+
+  get '/invites' do
+    session[:invite_id] = params[:id]
+    redirect '/invite'
   end
 
   get '/invite' do
@@ -66,14 +73,13 @@ class MarketingSuperstore < Sinatra::Base
         Invite.add_secondary(params, session[:invite_id])
       end
     end
-    redirect '/home'
+    redirect '/invite'
   end
 
   private
   def update_invite
-    p "session invite:#{session[:invite_id]}"
       @invite = Invite.get(session[:invite_id])
-      @invite.update(response: 'Invite Recieved')
+      @invite.update(response: 'Invite Received')
       @invite.save!
   end
 
@@ -89,8 +95,9 @@ class MarketingSuperstore < Sinatra::Base
     return LinkedIn::OAuth2.new(client_id, client_secret).get_access_token(code)
   end
 
-  def update_invitee(linkedin_data)
-    @invitee = Invitee.first_or_create(:email => linkedin_data.profile.email_address)
+  def update_invitee(linkedin_data, email_query)
+    response = JSON.parse(open(email_query).read)
+    @invitee = Invitee.first_or_create(:email => response["emailAddress"])
     @invitee.update(
     first_name: linkedin_data.profile.first_name,
     last_name: linkedin_data.profile.last_name,

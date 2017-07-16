@@ -13,7 +13,7 @@ var token = '6033867.a321c67.b6a7c62475d7433faf9d4d5a0cfd8b6f',
       success: function(feed){
         console.log(feed.items[0].images.standard_resolution.url);
         for(x in feed.items){
-          $('#instagram-feed').append('<a href="'+feed.items[x].link+'"><img src="'+feed.items[x].images.standard_resolution.url+'" width="300"  height="300"</a>');
+          $('#instagram-feed').append('<a href="'+feed.items[x].link+'"><img class="instapic" src="'+feed.items[x].images.standard_resolution.url+'" width="300"  height="300"</a>');
         }
           },
       error: function(feed){
@@ -30,18 +30,20 @@ var token = '6033867.a321c67.b6a7c62475d7433faf9d4d5a0cfd8b6f',
                 <div class="page-heading">
                     <h1>we are meetups</h1>
                     <hr class="small">
-                    <span class="subheading">networking events for events professionals</span>
+                    <span class="subheading">networking events for events professionals</span><br>
+                    <form class="" action="/reply" method="get">
+                      <input type="image" src="Sign-in.png" width="275px">
+                    </form>
                 </div>
+
             </div>
         </div>
     </div>
 </header>
 
-<div class="sign-in">
-
-  <a href="/reply">Sign in with LinkedIn</a>
-
-</div>
-
+<form class="" action="https://www.instagram.com/pkerwood" method="get">
+  <input type="image" src="insta.png" width="30">
+</form>
+our events
 <div id="instagram-feed">
 </div>
