@@ -45,6 +45,7 @@ class MarketingSuperstore < Sinatra::Base
 
   get '/invites' do
     session[:invite_id] = params[:id]
+    update_invite
     redirect '/invite'
   end
 
