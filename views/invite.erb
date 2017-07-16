@@ -18,7 +18,7 @@
         <h4>event description</h4>
         <i> <%= @invite.event.description %> </i><br>
         <h4>your rsvp</h4>
-        <% if @invite.response == 'Invite Received' %>
+        <% if @invite.response == 'Invite Received' ||  @invite.response == 'Invite Sent' %>
         <form action="/rsvp" method="post">
           <input type="hidden" name="invitee_id" value="<%= @invite.invitee.id %>">
           <input type="hidden" name="event_id" value="<%= @invite.event.id %>">
