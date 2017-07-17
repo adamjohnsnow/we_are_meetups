@@ -5,11 +5,21 @@
   <input type="submit" value="Search">
 </form>
  <% @users.each do |user| %>
-<div class="container">
-  <div class="col-sm-1 photo"><img src="<%= user.linkedin_profile_pic %>" width="65"></div>
-  <div class="col-sm-4">
-    <strong><%= user.first_name %> <%= user.last_name %></strong><br>
-    <%= user.linkedin_headline %>
+<div class="container white">
+  <div class="col-sm-1 photo"><img src="<%= user.linkedin_profile_pic %>" width="105"></div>
+  <div class="col-sm-9">
+    <strong><%= user.first_name %> <%= user.last_name %></strong> -
+    <%= user.linkedin_headline %><br>
+    <a href="mailto:<%= user.email %>"><%= user.email %></a><br>
+    <a href="<%= user.linkedin_url %>">linkedin profile</a>
+  </div>
+  <div class="col-sm-2">
+    Invited to: <%= user.invites.all.count %><br>
+    Attended: <%= user.invites.all(:response => 'Attended').count %><br>
+    Accepted: <%= user.invites.all(:response => 'Accepted').count %><br>
+    Declined: <%= user.invites.all(:response => 'Declined').count %><br>
+    Invited by: <%= user.invites.first.invited_by %>
   </div>
 </div>
+<br>
   <% end %>

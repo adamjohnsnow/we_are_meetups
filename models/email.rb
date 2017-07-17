@@ -16,6 +16,7 @@ To: #{@invite.invitee.email}
 Subject: You have been invited to our next amazing event!
 Content-Type: text/html;
 <html>
+<img src="#{@invite.event.image}" size="200px">
 Dear guest,<br><br>
 You have been invited by #{@invite.invited_by} to attend our next exciting networking event.<br>
 <h2>#{@invite.event.title}</h2>

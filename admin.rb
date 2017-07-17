@@ -32,20 +32,31 @@ class AdminRoutes < Sinatra::Base
   end
 
   post '/new-event' do
-    @event = Event.create(params)
+    unless params[:file] == nil
+      event = Event.upload_image(params[:file])
+      params[:image] = event
+      params.tap{ |keys| keys.delete(:file) }
+    end
+    Event.create(params)
     redirect '/admin-home'
   end
 
   get '/admin-manage' do
     @event = Event.get(params[:id])
+    @attendees = Invite.all(:event_id => params[:id], :response => 'Attended')
     @accepteds = Invite.all(:event_id => params[:id], :response => 'Accepted')
-    @pendings = Invite.all(:event_id => params[:id], :response.not => ['Accepted', 'Declined'])
+    @pendings = Invite.all(:event_id => params[:id], :response.not => ['Accepted', 'Declined', 'Attended'])
     @declineds = Invite.all(:event_id => params[:id], :response => 'Declined')
     @map = Map.make_link(@event.location, @event.postcode)
     erb :event_admin
   end
 
   post '/save-event' do
+    unless params[:file] == nil
+      event = Event.upload_image(params[:file])
+      params[:image] = event
+      params.tap{ |keys| keys.delete(:file) }
+    end
     @event = Event.get(params[:id])
     @event.update(params)
     @event.save!
@@ -78,6 +89,12 @@ class AdminRoutes < Sinatra::Base
     @users = Invitee.all(:last_name.like => '%' + params[:surname] + '%')
     erb :users
   end
+
+  get '/attendees' do
+    @invites = Invite.all(:event_id => params[:id])
+    erb :attendees
+  end
+
   private
 
   def mismatched_passwords

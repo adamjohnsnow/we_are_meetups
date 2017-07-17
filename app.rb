@@ -20,6 +20,7 @@ class MarketingSuperstore < Sinatra::Base
   end
 
   get '/' do
+    @token = '6033867.a321c67.b6a7c62475d7433faf9d4d5a0cfd8b6f'
     erb :index
   end
 
@@ -61,7 +62,8 @@ class MarketingSuperstore < Sinatra::Base
       redirect '/reply'
     end
     @user = Invitee.get(session[:guest_id])
-    @invites = @user.invites.all
+    @invites = @user.invites.events.all(:date.gte => Date.today).invites.all
+    @past_invites = @user.invites.all(:response => 'Attended')
     erb :home
   end
 
@@ -80,10 +82,24 @@ class MarketingSuperstore < Sinatra::Base
     redirect '/invite'
   end
 
+  get '/guest-list' do
+    @event = Event.get(params[:id])
+    @invites = @event.invites.all(:response => ["Accepted", "Attended"])
+    erb :guest_list
+  end
+
+  get '/about' do
+    erb :about
+  end
+
+  get '/contact' do
+    erb :contact
+  end
+
   private
   def update_invite
       @invite = Invite.get(session[:invite_id])
-      @invite.update(response: 'Invite Received')
+      @invite.update(response: 'Invite Received') if @invite.response == 'Invite Sent'
       @invite.save!
   end
 

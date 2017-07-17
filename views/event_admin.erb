@@ -3,9 +3,9 @@
 <div class="container">
   <a href="/admin-home">Back</a><br>
 
-  <div class="col-sm-6">
+  <div class="col-sm-6 white">
     <h1><%= @event.title %></h1>
-    <form class="" action="/save-event" method="post">
+    <form class="" action="/save-event" method="post" accept-charset="utf-8" enctype="multipart/form-data">
       <input type="hidden" name="id" value="<%=@event.id%>">
       <p>  Title <input type="text" name="title" value="<%= @event.title %>"> </p>
       <p>  Date <input type="date" name="date" value="<%= @event.date %>"> </p>
@@ -14,14 +14,25 @@
         <p>  Location <input type="text" name="location" value="<%= @event.location %>" size="30"> </p>
         <p>  Postcode <input type="text" name="postcode" value="<%= @event.postcode %>" size="10"> </p>
         <p>  Description <br><textarea name="description" cols="40" rows="3"><%= @event.description %></textarea> </p>
+        <div class="container">
+          <input class="col-sm-4" type="file" name="file" id="file">
+        </div>
+        or<br>
         <input type="text" name="image" value="<%= @event.image %>" size="35"><br><br>
         <p>  <input class="btn" type="submit" value="Save Event"></p>
       </form>
       <%= @map %>
     </div>
 
-    <div class="col-sm-6">
-      <h2> Invites </h2>
+    <div class="col-sm-6 white">
+      <a href="/attendees?id=<%= @event.id %>"><h2> Invites </h2></a>
+      <% if @attendees.count > 0 %>
+      <h4>ATTENDED:</h4>
+        <% @attendees.each do |invite| %>
+                  <strong><%= invite.invitee.first_name %> <%= invite.invitee.last_name %></strong><br>
+                  <i><%= invite.invitee.linkedin_headline %></i><br>
+        <% end %>
+      <% else %>
       <h4>ACCEPTED:</h4>
       <% if @accepteds.count > 0 %>
         <% @accepteds.each do |invite| %>
@@ -31,6 +42,8 @@
       <% else %>
         This event has no accepted invites
       <% end %>
+      <%end%>
+      <a href="/guest-list?id=<%= @event.id %>"><h4> Guest List </h4></a>
       <h4>PENDING:</h4>
       <% if @pendings.count > 0 %>
         <% @pendings.each do |invite| %>

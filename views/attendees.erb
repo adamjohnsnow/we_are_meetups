@@ -1,0 +1,19 @@
+<div class="admin-header"></div>
+<a href="/admin-manage?id=<%= @invites.first.event.id %>"><h2><%= @invites.first.event.title %></h2>
+<h3><%= @invites.first.event.date.strftime("%d/%m/%Y") %> - <%= @invites.first.event.time.strftime("%H:%M")%>-<%= @invites.first.event.end.strftime("%H:%M")%></h3>
+ <% @invites.each do |invite| %>
+<div class="container white">
+  <div class="col-sm-1 photo"><img src="<%= invite.invitee.linkedin_profile_pic %>" width="105"></div>
+  <div class="col-sm-9">
+    <strong><%= invite.invitee.first_name %> <%= invite.invitee.last_name %></strong> -
+    <%= invite.invitee.linkedin_headline %><br>
+    <a href="mailto:<%= invite.invitee.email %>"><%= invite.invitee.email %></a><br>
+    <a href="<%= invite.invitee.linkedin_url %>">linkedin profile</a>
+  </div>
+  <div class="col-sm-2">
+    <h4><%= invite.response %></h4>
+    FORM HERE
+  </div>
+</div>
+<br>
+  <% end %>

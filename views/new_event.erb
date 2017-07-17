@@ -1,6 +1,6 @@
 <div class="admin-header"></div>
 <h2>Create New Event</h2>
-<form class="white" action="/new-event" method="post">
+<form class="white" action="/new-event" method="post" accept-charset="utf-8" enctype="multipart/form-data">
   <p> <input type="text" name="title" placeholder="event title" size="50"> </p>
   <p> <input type="date" name="date">
     <input type="time" name="time"> to
@@ -11,6 +11,12 @@
   <p>
     <textarea name="description" cols="50" rows="3" placeholder="description"></textarea>
   </p>
+  <div class="container">
+    <div class="col-sm-4"></div>
+    <input class="col-sm-4" type="file" name="file" id="file">
+    <div class="col-sm-4"></div>
+  </div>
+  or<br>
   <input type="text" name="image" value="img/shutterstock_422347750.jpg" size="35"><br><br>
   <input type="hidden" name="user_id" value="<%= @user %>">
   <input class="btn" type="submit" value="Create Event">
