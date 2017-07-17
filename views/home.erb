@@ -19,16 +19,14 @@
   <h3> your invites </h3>
     <% @invites.each do |invite| %>
 
-      <div class="container">
-      <div class="col-lg-3"></div>
+
         <a href="/invites?id=<%= invite.id%>">
-      <div class="col-lg-6 invite-list" style="background-image: url(<%= invite.event.image %>); vertical-align: middle;">
+      <div class="col-lg-12 invite-list" style="background-image: url(<%= invite.event.image %>)">
         <h3><%= invite.event.title %></h3>
           <%= invite.event.date.strftime("%d/%m/%Y") %>, <%= invite.event.time.strftime("%H:%M") %>-<%= invite.event.end.strftime("%H:%M") %>
             <br>Your RSVP: <%= invite.response %><br><br>
       </div></a>
-      <div class="col-lg-3"></div>
-      </div><br>
+      <br>
     <% end%>
   <% else %>
   You don't currently have any invitations.<br> Register your interest in future events by clicking /here/

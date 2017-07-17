@@ -27,7 +27,7 @@ on #{@invite.event.date.strftime("%A %-d %B")} from #{@invite.event.time.strftim
 <h3>Please respond by following <a href="#{@reply_url}/reply?invite=#{@invite.id}">this link</a> or logging into <a href="#{@reply_url}">your account</a> via LinkedIn</h3>
 <br>
 Kindest regards,<br>
-<h3>The Marketing Superstore Team</h3></html>
+<h3>the we are meetups team</h3></html>
 END_OF_MESSAGE
 
     smtp = Net::SMTP.new 'smtp.gmail.com', 587

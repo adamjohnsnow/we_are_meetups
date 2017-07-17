@@ -26,8 +26,10 @@
           <% if @invite.type == 'primary' %>
           <i>as a primary invitee to this event, please bring a guest!</i><br>
           <div class="flash"><%= flash[:notice] %></div>
-          <input class="input-sm" type="email" name="guest_email" size="55" placeholder="To accept this invitation, enter your guests email address"><br>
-          <p><textarea class="input-sm" name="reason" cols="54" rows="3" placeholder="I am inviting [name] because..."></textarea></p>
+          <div class="row">
+            <input class="input-sm" type="email" name="guest_email" size="55" placeholder="To accept this invitation, enter your guests email address"><br>
+            <p><textarea class="input-sm" name="reason" cols="54" rows="3" placeholder="I am inviting [name] because..."></textarea></p>
+          </div>
           <% end %>
           <input type="radio" name="rsvp" value="Declined"> i decline</input><br><br>
           <input class="btn" type="submit" value="RSVP">
