@@ -7,13 +7,13 @@
  <% @users.each do |user| %>
 <div class="container white">
   <div class="col-sm-1 photo"><img src="<%= user.linkedin_profile_pic %>" width="105"></div>
-  <div class="col-sm-9">
+  <div class="col-sm-8">
     <strong><%= user.first_name %> <%= user.last_name %></strong> -
     <%= user.linkedin_headline %><br>
     <a href="mailto:<%= user.email %>"><%= user.email %></a><br>
     <a href="<%= user.linkedin_url %>">linkedin profile</a>
   </div>
-  <div class="col-sm-2">
+  <div class="col-sm-3">
     Invited to: <%= user.invites.all.count %><br>
     Attended: <%= user.invites.all(:response => 'Attended').count %><br>
     Accepted: <%= user.invites.all(:response => 'Accepted').count %><br>
