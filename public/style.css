@@ -45,6 +45,8 @@
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffc578', endColorstr='#fb9d23',GradientType=1 );
 	height: 60px;
 	margin-bottom: 30px;
+	color: white;
+	text-align: center;
 }
 .instapic {
 	padding: 4px 4px 4px 4px;

@@ -1,4 +1,4 @@
-<div class="admin-header"></div>
+<div class="admin-header"><a href="/admin-home">admin home</a></div>
 <a href="/admin-manage?id=<%= @invites.first.event.id %>"><h2><%= @invites.first.event.title %></h2></a>
 <h3><%= @invites.first.event.date.strftime("%d/%m/%Y") %> - <%= @invites.first.event.time.strftime("%H:%M")%>-<%= @invites.first.event.end.strftime("%H:%M")%></h3>
  <% @invites.each do |invite| %>
@@ -8,9 +8,9 @@
     <% if invite.invitee.first_name != nil %>
     <strong><%= invite.invitee.first_name %> <%= invite.invitee.last_name %></strong> -
     <%= invite.invitee.linkedin_headline %><br>
-    <a href="<%= invite.invitee.linkedin_url %>">linkedin profile</a>
+    <a href="<%= invite.invitee.linkedin_url %>">linkedin profile</a><br>
     <% end %>
-    <a href="mailto:<%= invite.invitee.email %>"><%= invite.invitee.email %></a><br>
+    <a href="mailto:<%= invite.invitee.email %>"><%= invite.invitee.email %></a>
   </div>
   <div class="col-sm-2">
     <h4><%= invite.response %></h4>
