@@ -57,6 +57,9 @@ class MarketingSuperstore < Sinatra::Base
   end
 
   get '/home' do
+    if session[:guest_id] == nil
+      redirect '/reply'
+    end
     @user = Invitee.get(session[:guest_id])
     @invites = @user.invites.all
     erb :home
