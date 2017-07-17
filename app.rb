@@ -62,7 +62,7 @@ class MarketingSuperstore < Sinatra::Base
       redirect '/reply'
     end
     @user = Invitee.get(session[:guest_id])
-    @invites = @user.invites.events.all(:date.gte => Date.today).invites.all
+    @invites = Event.all(:date.gte => Date.today).invites.all(:invitee_id => session[:guest_id])
     @past_invites = @user.invites.all(:response => 'Attended')
     erb :home
   end
