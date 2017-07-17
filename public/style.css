@@ -58,13 +58,13 @@
 .invite-list{
 	color: white;
 	margin-bottom: 10px;
-	vertical-align: middle;
-	display: table-cell;
+	margin-top: 10px;
 }
 
 .white{
 	background-color: white;
 	padding: 5px 5px 5px 5px;
+	margin-top: 5px;
 }
 .user {
 	border: 1px;

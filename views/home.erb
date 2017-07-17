@@ -37,7 +37,7 @@
     <% @past_invites.each do |invite| %>
 
 
-        <a href="/guest-list?id=<%= invite.event.id%>">
+        <a href="/past-invites?id=<%= invite.id%>">
       <div class="col-lg-12 invite-list" style="background-image: url(<%= invite.event.image %>)">
         <h3><%= invite.event.title %></h3>
           <%= invite.event.date.strftime("%d/%m/%Y") %>, <%= invite.event.time.strftime("%H:%M") %>-<%= invite.event.end.strftime("%H:%M") %>
