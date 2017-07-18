@@ -45,6 +45,9 @@ class MarketingSuperstore < Sinatra::Base
     @api = LinkedIn::API.new(token)
     email_query = LinkedInAuth::EMAIL_QUERY + token.token + "&format=json"
     response = JSON.parse(open(email_query).read)
+    p response
+    p session[:guest_id]
+    binding.pry
     update_invitee(@api, response)
     if session[:invite_id] == nil
       redirect '/home'
@@ -113,6 +116,11 @@ class MarketingSuperstore < Sinatra::Base
     @sent_to = params[:invite]
     @system = params[:system]
     erb :resolve
+  end
+
+  get '/logout' do
+    session.destroy
+    redirect '/'
   end
 
   private
