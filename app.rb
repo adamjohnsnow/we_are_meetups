@@ -129,6 +129,8 @@ class MarketingSuperstore < Sinatra::Base
   end
 
   def get_token(code)
+    @client_id = ENV['LINKED_IN_ID']
+    @client_secret = ENV['LINKED_IN_SECRET']
     return LinkedIn::OAuth2.new(@client_id, @client_secret).get_access_token(code)
   end
 
