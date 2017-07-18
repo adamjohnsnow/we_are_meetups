@@ -117,8 +117,8 @@ class MarketingSuperstore < Sinatra::Base
   end
 
   def get_oauth
-    client_id = LinkedInAuth.first.client_id
-    client_secret = LinkedInAuth.first.client_secret
+    client_id = LinkedInAuth::LINKED_IN_ID
+    client_secret = LinkedInAuth::LINKED_IN_SECRET
     return LinkedIn::OAuth2.new(client_id, client_secret)
   end
 
