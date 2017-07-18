@@ -108,7 +108,6 @@ class MarketingSuperstore < Sinatra::Base
     erb :resolve
   end
 
-
   private
   def update_invite
       @invite = Invite.get(session[:invite_id])
@@ -117,15 +116,13 @@ class MarketingSuperstore < Sinatra::Base
   end
 
   def get_oauth
-    client_id = LinkedInAuth::LINKED_IN_ID
-    client_secret = LinkedInAuth::LINKED_IN_SECRET
-    return LinkedIn::OAuth2.new(client_id, client_secret)
+    @client_id = LinkedInAuth::LINKED_IN_ID
+    @client_secret = LinkedInAuth::LINKED_IN_SECRET
+    return LinkedIn::OAuth2.new(@client_id, @client_secret)
   end
 
   def get_token(code)
-    client_id = LinkedInAuth.first.client_id
-    client_secret = LinkedInAuth.first.client_secret
-    return LinkedIn::OAuth2.new(client_id, client_secret).get_access_token(code)
+    return LinkedIn::OAuth2.new(@client_id, @client_secret).get_access_token(code)
   end
 
   def update_invitee(linkedin_data, response)
