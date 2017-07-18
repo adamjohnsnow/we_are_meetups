@@ -6,9 +6,8 @@ attr_reader :status
 
   def self.send(invite_id)
 
-    @email_account = LinkedInAuth.get(2)
     @invite = Invite.get(invite_id)
-    ENV['RACK_ENV'] == 'development' ? @reply_url = LinkedInAuth::REDIRECT_LOGIN : @reply_url = LinkedInAuth::HEROKU
+    @reply_url = LinkedInAuth::HOSTNAME
 
     msg = <<END_OF_MESSAGE
 From: we are meetups <#{@email_account.client_id}>
@@ -25,7 +24,7 @@ on #{@invite.event.date.strftime("%A %-d %B")} from #{@invite.event.time.strftim
 <br><i>#{@invite.event.description}</i><br><br>
 <strong>#{@invite.invited_by} said that they have invited you because:</strong><br>
 <i>"#{@invite.reason}"</i><br>
-<h3>Please respond by following <a href="#{@reply_url}/reply?invite=#{@invite.id}">this link</a> or logging into <a href="#{@reply_url}">your account</a> via LinkedIn</h3>
+<h3>Please respond by following <a href="#{@reply_url}/login?invite=#{@invite.id}">this link</a> or logging into <a href="#{@reply_url}">your account</a> via LinkedIn</h3>
 <br>
 Kindest regards,<br>
 <h3>the we are meetups team</h3></html>
@@ -33,7 +32,7 @@ END_OF_MESSAGE
 
     smtp = Net::SMTP.new 'smtp.gmail.com', 587
     smtp.enable_starttls
-    smtp.start('www.gmail.com', @email_account.client_id, @email_account.client_secret, :login) do
+    smtp.start('www.gmail.com', LinkedInAuth::EMAIL_ADDRESS, LinkedInAuth::EMAIL_PASSWORD, :login) do
       smtp.send_message(msg, @email_account.client_id, @invite.invitee.email)
     end
   end

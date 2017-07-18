@@ -1,6 +1,6 @@
 require_relative './linkedin'
 class Map
-  API_KEY = LinkedInAuth.get(3).client_id
+  API_KEY = LinkedInAuth::GOOGLEMAPS_KEY
 
   def self.make_link(location, postcode)
     @location_string = strip_spaces(location, postcode)

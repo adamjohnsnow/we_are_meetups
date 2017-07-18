@@ -20,23 +20,25 @@ class MarketingSuperstore < Sinatra::Base
   end
 
   get '/' do
-    @token = '6033867.a321c67.b6a7c62475d7433faf9d4d5a0cfd8b6f'
     erb :index
   end
 
-  get '/reply' do
-    session[:invite_id] = params[:invite]
-    update_invite if params[:invite]
-    @oauth = get_oauth
-    @linkedin_string = @oauth.auth_code_url
-    redirect @linkedin_string
+  get '/login' do
+    if params[:invite]
+      session[:invite_id] = params[:invite]
+      session[:guest_id] = Invite.get(params[:invite]).invitee_id
+      update_invite
+    end
+    oauth = get_oauth
+    redirect oauth.auth_code_url
   end
 
   get '/login/callback' do
     token = get_token(params[:code])
     @api = LinkedIn::API.new(token)
     email_query = LinkedInAuth::EMAIL_QUERY + token.token + "&format=json"
-    update_invitee(@api, email_query)
+    response = JSON.parse(open(email_query).read)
+    update_invitee(@api, response)
     if session[:invite_id] == nil
       redirect '/home'
     else
@@ -51,15 +53,19 @@ class MarketingSuperstore < Sinatra::Base
   end
 
   get '/invite' do
-    @invite = Invite.get(session[:invite_id])
-    @map = Map.make_link(@invite.event.location, @invite.event.postcode)
-    @guest = @invite.invitee
-    erb :invite
+    if Invitee.get(session[:guest_id]).email == Invite.get(session[:invite_id]).sent_to
+      @invite = Invite.get(session[:invite_id])
+      @map = Map.make_link(@invite.event.location, @invite.event.postcode)
+      @guest = @invite.invitee
+      erb :invite
+    else
+      redirect "/resolve?invite=#{Invitee.get(session[:guest_id]).email}&system=#{Invite.get(session[:invite_id]).sent_to}"
+    end
   end
 
   get '/home' do
     if session[:guest_id] == nil
-      redirect '/reply'
+      redirect '/login'
     end
     @user = Invitee.get(session[:guest_id])
     @invites = Event.all(:date.gte => Date.today).invites.all(:invitee_id => session[:guest_id])
@@ -96,6 +102,13 @@ class MarketingSuperstore < Sinatra::Base
     erb :contact
   end
 
+  get '/resolve' do
+    @sent_to = params[:invite]
+    @system = params[:system]
+    erb :resolve
+  end
+
+
   private
   def update_invite
       @invite = Invite.get(session[:invite_id])
@@ -115,18 +128,28 @@ class MarketingSuperstore < Sinatra::Base
     return LinkedIn::OAuth2.new(client_id, client_secret).get_access_token(code)
   end
 
-  def update_invitee(linkedin_data, email_query)
-    response = JSON.parse(open(email_query).read)
-    @invitee = Invitee.first_or_create(:email => response["emailAddress"])
-    @invitee.update(
+  def update_invitee(linkedin_data, response)
+    if session[:guest_id] != nil
+      if Invitee.get(session[:guest_id]).email != response["emailAddress"]
+        session[:linkedin_data] = linkedin_data
+        redirect "/resolve?invite=#{Invitee.get(session[:guest_id]).email}&system=#{response["emailAddress"]}"
+      end
+    end
+    update_invitee_record(linkedin_data, response["emailAddress"])
+  end
+
+  def update_invitee_record(linkedin_data, email)
+    guest = Invitee.first_or_create(:email => email)
+    guest.update(
     first_name: linkedin_data.profile.first_name,
     last_name: linkedin_data.profile.last_name,
     linkedin_id: linkedin_data.profile.id,
     linkedin_profile_pic: linkedin_data.picture_urls.all[0],
     linkedin_url: linkedin_data.profile.site_standard_profile_request.url,
-    linkedin_headline: linkedin_data.profile.headline
+    linkedin_headline: linkedin_data.profile.headline,
+    last_logged_in: Date.today
     )
-    @invitee.save!
-    session[:guest_id] = @invitee.id
+    guest.save!
+    session[:guest_id] = guest.id
   end
 end

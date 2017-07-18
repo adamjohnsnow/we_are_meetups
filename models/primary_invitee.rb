@@ -11,6 +11,7 @@ class Invitee
   property :linkedin_url, String
   property :linkedin_profile_pic, String
   property :linkedin_headline, String
+  property :last_logged_in, DateTime
 
   has n, :invites
 end

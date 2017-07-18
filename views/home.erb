@@ -27,13 +27,13 @@
       <br>
     <% end%>
   <% else %>
-  you don't currently have any invitations<br> register your interest in future events by clicking /here/
+  you don't currently have any invitations<br> register your interest in future events by sending us a message <a href="/contact">here</a>
   <% end %>
 </div>
 <div class="container white">
 
   <% if @past_invites.count > 0 %>
-  <h3> past attended events </h3>
+  <h3> attended events </h3>
     <% @past_invites.each do |invite| %>
 
 
