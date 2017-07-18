@@ -9,6 +9,13 @@ require_relative './models/linkedin'
 require_relative './models/map'
 
 ENV['RACK_ENV'] ||= 'development'
+ENV['LINKED_IN_ID'] =|| LinkedInAuth.get(1).client_id
+ENV['LINKED_IN_SECRET'] =|| LinkedInAuth.get(1).client_secret
+ENV['EMAIL_ADDRESS'] =|| LinkedInAuth.get(2).client_id
+ENV['EMAIL_ADDRESS'] =|| LinkedInAuth.get(2).client_secret
+ENV['GOOGLEMAPS_KEY'] =|| LinkedInAuth.get(3).client_id
+ENV['S3_KEY'] =|| LinkedInAuth.get(4).client_id
+ENV['S3_SECRET'] =|| LinkedInAuth.get(4).client_secret
 
 class MarketingSuperstore < Sinatra::Base
   enable :sessions
@@ -116,8 +123,8 @@ class MarketingSuperstore < Sinatra::Base
   end
 
   def get_oauth
-    @client_id = LinkedInAuth::LINKED_IN_ID
-    @client_secret = LinkedInAuth::LINKED_IN_SECRET
+    @client_id = ENV['LINKED_IN_ID']
+    @client_secret = ENV['LINKED_IN_SECRET']
     return LinkedIn::OAuth2.new(@client_id, @client_secret)
   end
 

@@ -37,8 +37,8 @@ class Event
   end
 
   def self.aws_creds
-    aws_key = LinkedInAuth::S3_KEY
-    aws_secret = LinkedInAuth::S3_SECRET
+    aws_key = ENV['S3_KEY']
+    aws_secret = ENV['S3_SECRET']
     Aws.config.update({
       region: 'eu-west-2',
       credentials: Aws::Credentials.new(aws_key, aws_secret)

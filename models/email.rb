@@ -32,7 +32,7 @@ END_OF_MESSAGE
 
     smtp = Net::SMTP.new 'smtp.gmail.com', 587
     smtp.enable_starttls
-    smtp.start('www.gmail.com', LinkedInAuth::EMAIL_ADDRESS, LinkedInAuth::EMAIL_PASSWORD, :login) do
+    smtp.start('www.gmail.com', ENV['EMAIL_ADDRESS'], ENV['EMAIL_PASSWORD'], :login) do
       smtp.send_message(msg, @email_account.client_id, @invite.invitee.email)
     end
   end
