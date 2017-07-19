@@ -8,6 +8,12 @@ attr_reader :status
     @invite = Invite.get(invite_id)
     @reply_url = LinkedInAuth::HOSTNAME
 
+    if @invite.invited_by.to_i > 0
+      @invited_by = Invitee.get(@invite.invited_by.to_i).first_name + " " + Invitee.get(@invite.invited_by.to_i).last_name
+    else
+      @invited_by = @invite.invited_by
+    end
+
     msg = <<END_OF_MESSAGE
 From: we are meetups <#{ENV['EMAIL_ADDRESS']}>
 To: #{@invite.sent_to}
@@ -15,13 +21,13 @@ Subject: You have been invited to our next amazing event!
 Content-Type: text/html;
 <html>
 Dear guest,<br><br>
-You have been invited by #{@invite.invited_by} to attend our next exciting networking event.<br>
+You have been invited by #{@invited_by} to attend our next exciting networking event.<br>
 <h1>#{@invite.event.title}</h1>
 <img src="#{@invite.event.image}" width="500px" height="100px"><br>
 At:<strong> #{@invite.event.location}, #{@invite.event.postcode}</strong><br>
 on #{@invite.event.date.strftime("%A %-d %B")} from #{@invite.event.time.strftime("%H:%M")} to #{@invite.event.end.strftime("%H:%M")}
 <br><i>#{@invite.event.description}</i><br><br>
-<strong>#{@invite.invited_by} said that they have invited you because:</strong><br>
+<strong>#{@invited_by} said that they have invited you because:</strong><br>
 <i>"#{@invite.reason}"</i><br>
 <h3>Please respond by following <a href="#{@reply_url}/login?invite=#{@invite.id}">this link</a> or logging into <a href="#{@reply_url}/login?guest=#{@invite.invitee.id}">your account</a> via LinkedIn</h3>
 <br>

@@ -172,7 +172,7 @@ class MarketingSuperstore < Sinatra::Base
       redirect "/resolve?invite=#{guest_email}&system=#{linkedin_email}"
     end
     if session[:invite_id] != nil
-      invite_email = Invite.get(session[:invite_id]).sent_to
+      invite_email = Invite.get(session[:invite_id]).invitee.email
       if invite_email != linkedin_email
         redirect "/resolve?invite=#{invite_email}&system=#{linkedin_email}"
       end

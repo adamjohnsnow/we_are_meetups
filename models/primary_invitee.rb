@@ -28,10 +28,13 @@ class Invitee
     guest.save!
   end
 
-  def self.remove(email, id)
-    unused = Invitee.first(:email => email)
+  def self.remove(old_email, new_email, id)
+    unused = Invitee.first(:email => old_email)
     if unused.id != id
       unused.destroy!
+    else
+      unused.email = new_email
+      unused.save!
     end
   end
 end

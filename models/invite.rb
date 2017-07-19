@@ -62,10 +62,10 @@ class Invite
       email = params["linkedin"]
     end
     invites.each do |invite|
-      invite.update(invitee_id: user_id)
+      invite.update(invitee_id: user_id.to_i)
       invite.save!
     end
-    Invitee.remove(remove, user_id)
+    Invitee.remove(remove, email, user_id.to_i)
     return email
   end
 end
