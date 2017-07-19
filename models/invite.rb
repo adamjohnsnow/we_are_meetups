@@ -65,7 +65,7 @@ class Invite
       invite.update(invitee_id: user_id.to_i)
       invite.save!
     end
-    Invitee.remove(remove, email, user_id.to_i)
+    Invitee.remove(remove, email, user_id.to_i) if remove == params["sent_to"]
     return email
   end
 end
