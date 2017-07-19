@@ -65,7 +65,7 @@ class Invite
       invite.update(invitee_id: user_id)
       invite.save!
     end
-    Invitee.remove(remove)
+    Invitee.remove(remove, user_id)
     return email
   end
 end
