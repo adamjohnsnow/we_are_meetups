@@ -42,6 +42,7 @@ class AdminRoutes < Sinatra::Base
   end
 
   get '/admin-manage' do
+    @users = Invitee.all
     @event = Event.get(params[:id])
     @attendees = Invite.all(:event_id => params[:id], :response => 'Attended')
     @accepteds = Invite.all(:event_id => params[:id], :response => 'Accepted')
@@ -95,6 +96,11 @@ class AdminRoutes < Sinatra::Base
     erb :attendees
   end
 
+  post '/send-message' do
+    event = Event.get(params["event"])
+    Email.send_update(event, params["subject"], params["message"])
+    redirect '/attendees?id=' + event.id.to_s
+  end
   private
 
   def mismatched_passwords

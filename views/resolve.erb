@@ -12,10 +12,12 @@
     </div>
 </header>
 
-We have two email addresses for you, which is your primary contact address?
+<h3>We have two email addresses for you, which is your primary contact address?</h3>
 <form class="" action="/resolve" method="post">
-  <input type="radio" name="email"> <%= @sent_to %></input>
+  <input type="hidden" name="sent_to" value="<%= @sent_to %>">
+  <input type="hidden" name="linkedin" value="<%= @system %>">
+  <input type="radio" name="email" value="sent_to"> <%= @sent_to %></input>
   <br>or<br>
-  <input type="radio" name="email"> <%= @system %></input><br>
-  <input type="submit" value="Submit">
+  <input type="radio" name="email" value="linkedin"> <%= @system %></input><br>
+  <input type="submit" value="choose this email address">
 </form>

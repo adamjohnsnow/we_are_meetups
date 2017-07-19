@@ -48,7 +48,14 @@
       <% if @pendings.count > 0 %>
         <% @pendings.each do |invite| %>
           <%= invite.invitee.email %> : <%= invite.response %> <br>
-          <i>(invited by <%= invite.invited_by %>)</i>
+          <i>(invited by
+            <% if invite.type == 'primary' %>
+              <%= invite.invited_by %>
+            <% else %>
+              <% invited_by = @users.first(:id => invite.invited_by) %>
+              <%= "#{invited_by.first_name} #{invited_by.last_name}" %>
+            <% end %>
+          )</i>
           <br>
         <% end %>
         <% if @pendings.all(:response => "Invite not sent").count > 0%>

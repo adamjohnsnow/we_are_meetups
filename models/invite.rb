@@ -49,4 +49,23 @@ class Invite
       end
     end
   end
+
+
+  def self.resolve_emails(params ,user_id)
+    if params["email"] == params.keys[0]
+      invites = Invite.all(:sent_to => params["linkedin"])
+      remove = params["linkedin"]
+      email = params["sent_to"]
+    else
+      invites = Invite.all(:sent_to => params["sent_to"])
+      remove = params["sent_to"]
+      email = params["linkedin"]
+    end
+    invites.each do |invite|
+      invite.update(invitee_id: user_id)
+      invite.save!
+    end
+    Invitee.remove(remove)
+    return email
+  end
 end

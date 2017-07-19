@@ -12,7 +12,7 @@ ENV['RACK_ENV'] ||= 'development'
 ENV['LINKED_IN_ID'] ||= LinkedInAuth.get(1).client_id
 ENV['LINKED_IN_SECRET'] ||= LinkedInAuth.get(1).client_secret
 ENV['EMAIL_ADDRESS'] ||= LinkedInAuth.get(2).client_id
-ENV['EMAIL_ADDRESS'] ||= LinkedInAuth.get(2).client_secret
+ENV['EMAIL_PASSWORD'] ||= LinkedInAuth.get(2).client_secret
 ENV['GOOGLEMAPS_KEY'] ||= LinkedInAuth.get(3).client_id
 ENV['S3_KEY'] ||= LinkedInAuth.get(4).client_id
 ENV['S3_SECRET'] ||= LinkedInAuth.get(4).client_secret
@@ -35,6 +35,9 @@ class MarketingSuperstore < Sinatra::Base
       session[:invite_id] = params[:invite]
       session[:guest_id] = Invite.get(params[:invite]).invitee_id
       update_invite
+    else
+      session[:invite_id] = nil
+      session[:guest_id] = nil
     end
     oauth = get_oauth
     redirect oauth.auth_code_url
@@ -45,10 +48,7 @@ class MarketingSuperstore < Sinatra::Base
     @api = LinkedIn::API.new(token)
     email_query = LinkedInAuth::EMAIL_QUERY + token.token + "&format=json"
     response = JSON.parse(open(email_query).read)
-    p response
-    p session[:guest_id]
-    binding.pry
-    update_invitee(@api, response)
+    update_invitee_record(@api, response["emailAddress"])
     if session[:invite_id] == nil
       redirect '/home'
     else
@@ -63,14 +63,10 @@ class MarketingSuperstore < Sinatra::Base
   end
 
   get '/invite' do
-    if Invitee.get(session[:guest_id]).email == Invite.get(session[:invite_id]).sent_to
       @invite = Invite.get(session[:invite_id])
       @map = Map.make_link(@invite.event.location, @invite.event.postcode)
       @guest = @invite.invitee
       erb :invite
-    else
-      redirect "/resolve?invite=#{Invitee.get(session[:guest_id]).email}&system=#{Invite.get(session[:invite_id]).sent_to}"
-    end
   end
 
   get '/home' do
@@ -109,6 +105,7 @@ class MarketingSuperstore < Sinatra::Base
   end
 
   get '/contact' do
+    @email = ENV['EMAIL_ADDRESS']
     erb :contact
   end
 
@@ -118,11 +115,25 @@ class MarketingSuperstore < Sinatra::Base
     erb :resolve
   end
 
+  post '/resolve' do
+    email = Invite.resolve_emails(params, session[:guest_id])
+    guest = Invitee.get(session[:guest_id])
+    guest.update(email: email)
+    guest.save!
+    redirect '/home'
+  end
+
   get '/logout' do
     session.destroy
     redirect '/'
   end
 
+  post '/question' do
+    event = Event.get(params[:event]).title
+    guest = Invitee.get(params[:guest])
+    Email.question(event, guest, params[:message])
+    redirect '/invite'
+  end
   private
   def update_invite
       @invite = Invite.get(session[:invite_id])
@@ -142,28 +153,19 @@ class MarketingSuperstore < Sinatra::Base
     return LinkedIn::OAuth2.new(@client_id, @client_secret).get_access_token(code)
   end
 
-  def update_invitee(linkedin_data, response)
-    if session[:guest_id] != nil
-      if Invitee.get(session[:guest_id]).email != response["emailAddress"]
-        session[:linkedin_data] = linkedin_data
-        redirect "/resolve?invite=#{Invitee.get(session[:guest_id]).email}&system=#{response["emailAddress"]}"
-      end
-    end
-    update_invitee_record(linkedin_data, response["emailAddress"])
+  def update_invitee_record(linkedin_data, email)
+    guest = Invitee.first_or_create(:linkedin_id => linkedin_data.profile.id)
+    Invitee.update_guest(guest, linkedin_data)
+    session[:guest_id] = guest.id
+    check_email(email)
   end
 
-  def update_invitee_record(linkedin_data, email)
-    guest = Invitee.first_or_create(:email => email)
-    guest.update(
-    first_name: linkedin_data.profile.first_name,
-    last_name: linkedin_data.profile.last_name,
-    linkedin_id: linkedin_data.profile.id,
-    linkedin_profile_pic: linkedin_data.picture_urls.all[0],
-    linkedin_url: linkedin_data.profile.site_standard_profile_request.url,
-    linkedin_headline: linkedin_data.profile.headline,
-    last_logged_in: Date.today
-    )
-    guest.save!
-    session[:guest_id] = guest.id
+  def check_email(linkedin_email)
+    if session[:invite_id] != nil
+      saved_email = Invite.get(session[:invite_id]).sent_to
+      if saved_email != linkedin_email
+        redirect "/resolve?invite=#{saved_email}&system=#{linkedin_email}"
+      end
+    end
   end
 end

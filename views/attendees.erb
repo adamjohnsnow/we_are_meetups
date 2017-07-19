@@ -1,4 +1,4 @@
-<div class="admin-header"><a href="/admin-home">admin home</a></div>
+<div class="admin-header">admin home</div>
 <a href="/admin-manage?id=<%= @invites.first.event.id %>"><h2><%= @invites.first.event.title %></h2></a>
 <h3><%= @invites.first.event.date.strftime("%d/%m/%Y") %> - <%= @invites.first.event.time.strftime("%H:%M")%>-<%= @invites.first.event.end.strftime("%H:%M")%></h3>
  <% @invites.each do |invite| %>
@@ -19,3 +19,12 @@
 </div>
 <br>
   <% end %>
+  Send all accepted attendees a message:
+<form action="/send-message" method="POST">
+  <input type="hidden" name="event" value="<%= @invites.first.event_id %>">
+  Subject<br>
+  <input type="text" name="subject" size="50"><br>
+  Text<br>
+  <textarea name="message" cols="50" rows="10"></textarea><br>
+  <input type="submit" value="send message">
+</form>
