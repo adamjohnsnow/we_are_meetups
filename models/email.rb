@@ -23,7 +23,7 @@ on #{@invite.event.date.strftime("%A %-d %B")} from #{@invite.event.time.strftim
 <br><i>#{@invite.event.description}</i><br><br>
 <strong>#{@invite.invited_by} said that they have invited you because:</strong><br>
 <i>"#{@invite.reason}"</i><br>
-<h3>Please respond by following <a href="#{@reply_url}/login?invite=#{@invite.id}">this link</a> or logging into <a href="#{@reply_url}">your account</a> via LinkedIn</h3>
+<h3>Please respond by following <a href="#{@reply_url}/login?invite=#{@invite.id}">this link</a> or logging into <a href="#{@reply_url}/login?guest=#{@invite.invitee.id}">your account</a> via LinkedIn</h3>
 <br>
 Kindest regards,<br>
 <h3>the we are meetups team</h3></html>

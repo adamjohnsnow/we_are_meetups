@@ -35,6 +35,9 @@ class MarketingSuperstore < Sinatra::Base
       session[:invite_id] = params[:invite]
       session[:guest_id] = Invite.get(params[:invite]).invitee_id
       update_invite
+    elsif params[:guest]
+      session[:guest_id] = params[:guest]
+      session[:invite_id] = nil
     else
       session[:invite_id] = nil
       session[:guest_id] = nil
@@ -154,9 +157,13 @@ class MarketingSuperstore < Sinatra::Base
   end
 
   def update_invitee_record(linkedin_data, email)
-    guest = Invitee.first_or_create(:linkedin_id => linkedin_data.profile.id)
-    Invitee.update_guest(guest, linkedin_data)
+    if session[:guest_id] == nil || Invitee.first(:linkedin_id => linkedin_data.profile.id)
+      guest = Invitee.first_or_create(:linkedin_id => linkedin_data.profile.id)
+    else
+      guest = Invitee.get(session[:guest_id])
+    end
     session[:guest_id] = guest.id
+    Invitee.update_guest(guest, linkedin_data)
     check_email(email)
   end
 
