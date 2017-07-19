@@ -35,7 +35,7 @@
           <input class="btn" type="submit" value="Send my RSVP">
         </form>
         <% else %>
-        <br><strong><%= @invite.response %></strong>
+        <br><strong><%= @invite.response %></strong><br>
         <% end %>
         send a question<br>
           <form action="/question" method="post">

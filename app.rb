@@ -164,14 +164,17 @@ class MarketingSuperstore < Sinatra::Base
     end
     session[:guest_id] = guest.id
     Invitee.update_guest(guest, linkedin_data)
-    check_email(email)
+    check_email(email, guest.email)
   end
 
-  def check_email(linkedin_email)
+  def check_email(linkedin_email, guest_email)
     if session[:invite_id] != nil
-      saved_email = Invite.get(session[:invite_id]).sent_to
-      if saved_email != linkedin_email
-        redirect "/resolve?invite=#{saved_email}&system=#{linkedin_email}"
+      invite_email = Invite.get(session[:invite_id]).sent_to
+      if invite_email != linkedin_email
+        redirect "/resolve?invite=#{invite_email}&system=#{linkedin_email}"
+      end
+      if invite_email != guest_email
+        redirect "/resolve?invite=#{invite_email}&system=#{guest_email}"
       end
     end
   end
