@@ -13,8 +13,19 @@
     <a href="mailto:<%= invite.invitee.email %>"><%= invite.invitee.email %></a>
   </div>
   <div class="col-sm-2">
+    Invited by
+    <% if invite.invited_by.to_i > 0 %>
+          <%= @invitee.get(invite.invited_by.to_i).first_name + " " + @invitee.get(invite.invited_by.to_i).last_name %>
+        <% else %>
+          <%= invite.invited_by %>
+        <% end %>
     <h4><%= invite.response %></h4>
-    FORM HERE
+    <% if invite.response != "Attended" %>
+    <form action="/mark-attended" method="post">
+      <input type="hidden" value="<%= invite.id %>" name="<%= :id %>">
+      <input type="submit" value="Mark attended">
+    </form>
+    <% end %>
   </div>
 </div>
 <br>

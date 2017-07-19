@@ -20,7 +20,7 @@
     <% @invites.each do |invite| %>
         <a href="/invites?id=<%= invite.id%>">
       <div class="col-lg-12 invite-list" style="background-image: url(<%= invite.event.image %>)">
-        <h3><%= invite.event.title %></h3>
+        <span class="title"><%= invite.event.title %></span><br>
           <%= invite.event.date.strftime("%d/%m/%Y") %>, <%= invite.event.time.strftime("%H:%M") %>-<%= invite.event.end.strftime("%H:%M") %>
             <br>Your RSVP: <%= invite.response %><br><br>
       </div></a>
@@ -37,12 +37,12 @@
     <% @past_invites.each do |invite| %>
 
 
-        <a href="/past-invites?id=<%= invite.id%>">
+        <a href="/guest-list?id=<%= invite.event.id %>">
       <div class="col-lg-12 invite-list" style="background-image: url(<%= invite.event.image %>)">
-        <h3><%= invite.event.title %></h3>
+        <span class="title"><%= invite.event.title %></span><br>
           <%= invite.event.date.strftime("%d/%m/%Y") %>, <%= invite.event.time.strftime("%H:%M") %>-<%= invite.event.end.strftime("%H:%M") %>
       <br><br><br></div></a>
-      <br><br><br><br>
+      <br>
     <% end%>
   <% else %>
   you haven't attended any events yet

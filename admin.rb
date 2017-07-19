@@ -93,6 +93,7 @@ class AdminRoutes < Sinatra::Base
 
   get '/attendees' do
     @invites = Invite.all(:event_id => params[:id])
+    @invitee = Invitee.all
     erb :attendees
   end
 
@@ -100,6 +101,13 @@ class AdminRoutes < Sinatra::Base
     event = Event.get(params["event"])
     Email.send_update(event, params["subject"], params["message"])
     redirect '/attendees?id=' + event.id.to_s
+  end
+
+  post '/mark-attended' do
+    invite = Invite.get(params[:id])
+    invite.response = 'Attended'
+    invite.save!
+    redirect '/attendees?id=' + invite.event_id.to_s
   end
   private
 
