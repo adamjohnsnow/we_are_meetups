@@ -186,6 +186,7 @@ DEPENDENCIES
   dm-postgres-adapter
   linkedin-oauth2
   pry
+  rake
   rspec
   rubocop
   selenium-webdriver
