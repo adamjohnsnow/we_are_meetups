@@ -27,6 +27,7 @@ h6 {
 }
 a {
   color: #0085A1;
+  text-decoration: none;
 }
 a:hover,
 a:focus {
