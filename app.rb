@@ -24,7 +24,7 @@ class MarketingSuperstore < Sinatra::Base
   register Sinatra::Flash
 
   LinkedIn.configure do |config|
-    config.redirect_uri  = LinkedInAuth::HOSTNAME + '/login/callback'
+    config.redirect_uri  = ENV['WEBSITE_URL'] + '/login/callback'
   end
 
   get '/' do
@@ -34,7 +34,7 @@ class MarketingSuperstore < Sinatra::Base
   get '/login' do
     if params[:invite]
       session[:invite_id] = params[:invite]
-      session[:guest_id] = Invite.get(params[:invite]).invitee_id
+      session[:guest_id] = Invite.get(params[:invite]).invitee.id
       update_invite
     elsif params[:guest]
       session[:guest_id] = params[:guest]
