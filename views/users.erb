@@ -18,7 +18,7 @@
     Attended: <%= user.invites.all(:response => 'Attended').count %><br>
     Accepted: <%= user.invites.all(:response => 'Accepted').count %><br>
     Declined: <%= user.invites.all(:response => 'Declined').count %><br>
-    <% if user.invites %>
+    <% if user.invites.all.count > 0 %>
     Invited by: <%= user.invites.first.invited_by %>
     <% end %>
   </div>
