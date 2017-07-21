@@ -63,13 +63,13 @@ attr_reader :status
 
     mail = Mailit::Mail.new
     mail.to = email
-    mail.from = "#{ENV['EMAIL_ADDRESS']}"
+    mail.from = "adam@snowdonia.ltd"
     mail.subject = subject
     mail.html = message
 
     mailer = Mailit::Mailer.new
 
-    mailer.send(mail, :server => 'smtp.123-reg.co.uk', :port => 25,
-      :domain => '123-reg.co.uk', :password => ENV['EMAIL_PASSWORD'])
+    mailer.send(mail, :server => 'smtp.hosts.co.uk', :port => 25,
+      :domain => 'hosts.co.uk', :password => ENV['EMAIL_PASSWORD'])
     end
 end
