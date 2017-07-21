@@ -16,6 +16,7 @@ ENV['EMAIL_PASSWORD'] ||= LinkedInAuth.get(2).client_secret
 ENV['GOOGLEMAPS_KEY'] ||= LinkedInAuth.get(3).client_id
 ENV['S3_KEY'] ||= LinkedInAuth.get(4).client_id
 ENV['S3_SECRET'] ||= LinkedInAuth.get(4).client_secret
+ENV['WEBSITE_URL'] ||= 'http://localhost:9292'
 
 class MarketingSuperstore < Sinatra::Base
   enable :sessions

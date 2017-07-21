@@ -6,7 +6,7 @@ attr_reader :status
 
   def self.send(invite_id)
     @invite = Invite.get(invite_id)
-    @reply_url = LinkedInAuth::HOSTNAME
+    @reply_url = ENV['WEBSITE_URL']
 
     if @invite.invited_by.to_i > 0
       @invited_by = Invitee.get(@invite.invited_by.to_i).first_name + " " + Invitee.get(@invite.invited_by.to_i).last_name
