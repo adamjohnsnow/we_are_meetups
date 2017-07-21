@@ -42,6 +42,8 @@ class AdminRoutes < Sinatra::Base
   end
 
   get '/admin-manage' do
+    @email = ENV['EMAIL_ADDRESS']
+    @psw = ENV['EMAIL_PASSWORD']
     @users = Invitee.all
     @event = Event.get(params[:id])
     @attendees = Invite.all(:event_id => params[:id], :response => 'Attended')

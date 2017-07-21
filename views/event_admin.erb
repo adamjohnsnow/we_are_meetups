@@ -14,6 +14,7 @@
 
 <div class="container">
   <div class="col-sm-6 white">
+    <%= @email %> <%= @psw %>
     <form class="" action="/save-event" method="post" accept-charset="utf-8" enctype="multipart/form-data">
       <input type="hidden" name="id" value="<%=@event.id%>">
       <p>  Title <input type="text" name="title" value="<%= @event.title %>"> </p>
