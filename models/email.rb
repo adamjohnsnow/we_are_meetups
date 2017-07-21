@@ -1,5 +1,7 @@
 require 'net/smtp'
 require 'mailit'
+require 'mail'
+
 
 class Email
 attr_reader :status
@@ -70,22 +72,24 @@ attr_reader :status
     mailer.send(mail, :server => 'smtp.123-reg.co.uk', :port => ENV['SMTP_PORT'],
       :domain => '123-reg.co.uk', :password => ENV['EMAIL_PASSWORD'])
     end
-    def self.test_send(port)
+  def self.test_send(port)
 
-  msg = <<END_OF_MESSAGE
-From: we are meetups <#{ENV['EMAIL_ADDRESS']}>
-To: adamjohnsnow@icloud.com
-Subject: Test Message!
-Content-Type: text/html;
-<html>
-Dear guest,<br><br>
-Kindest regards,<br>
-<h3>the we are meetups team</h3></html>
-END_OF_MESSAGE
-
-    smtp = Net::SMTP.new 'smtp.123-reg.co.uk', port
-    smtp.start('123.reg.co.uk', ENV['EMAIL_ADDRESS'], ENV['EMAIL_PASSWORD'], :login) do
-      smtp.send_message(msg, ENV['EMAIL_ADDRESS'], 'adamjohnsnow@icloud.com')
-    end
+      options = { :address              => 'smtp.123-reg.co.uk',
+                  :port                 => port,
+                  :domain               => '123-reg.co.uk',
+                  :user_name            => ENV['EMAIL_ADDRESS'],
+                  :password             => ENV['EMAIL_PASSWORD'],
+                  :authentication       => 'login' }
+       Mail.defaults do
+        delivery_method :smtp, options
+      end
+      p options
+       mail = Mail.new do
+            from ENV['EMAIL_ADDRESS']
+              to 'adamjohnsnow@icloud.com'
+         subject 'This is a test email'
+            body 'test'
+       end
+      mail.deliver!
   end
 end

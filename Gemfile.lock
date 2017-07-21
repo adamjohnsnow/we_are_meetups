@@ -91,6 +91,8 @@ GEM
       faraday (~> 0.9)
       hashie (~> 3.2)
       oauth2 (~> 1.0)
+    mail (2.6.6)
+      mime-types (>= 1.16, < 4)
     mailit (2011.01.27)
     method_source (0.8.2)
     mime-types (3.1)
@@ -186,6 +188,7 @@ DEPENDENCIES
   database_cleaner
   dm-postgres-adapter
   linkedin-oauth2
+  mail
   mailit
   pry
   rake
