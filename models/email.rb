@@ -69,7 +69,7 @@ attr_reader :status
 
     mailer = Mailit::Mailer.new
 
-    mailer.send(mail, :server => 'smtp.123-reg.co.uk', :port => 587,
+    mailer.send(mail, :server => 'smtp.123-reg.co.uk', :port => 25,
       :domain => '123-reg.co.uk', :password => ENV['EMAIL_PASSWORD'])
     end
 end
