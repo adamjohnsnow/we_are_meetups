@@ -1,4 +1,4 @@
-<header class="intro-header" style="background-image: url(<%= @invite.event.image %>)">
+<header class="intro-header" style="background-image: url('<%= @invite.event.image %>')">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -33,7 +33,7 @@
 
           <% end %>
           <input type="radio" name="rsvp" value="Declined"> Decline</input><br><br>
-          <input class="btn" type="submit" value="Send my RSVP">
+          <input class="button" type="submit" value="Send my RSVP">
         </form>
         <% else %>
         <strong><%= @invite.response %></strong><br>
@@ -45,7 +45,7 @@
             <input type="hidden" name="guest" value="<%= @invite.invitee.id %>">
             <input type="hidden" name="event" value="<%= @invite.event.id %>">
             <textarea class="form-control" name="message" cols="54" rows="3" placeholder="ask your question here..."></textarea>
-            <input class="btn" type="submit" value="send question">
+            <input class="button" type="submit" value="send question">
           </form>
       </div><br />
       <div class="col-sm-6">

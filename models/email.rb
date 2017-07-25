@@ -30,7 +30,7 @@ attr_reader :status
       @invited_by = @invite.invited_by
     end
 
-    msg = "<html><body><div style='background-image: url(#{@invite.event.image}); padding-top: 30px; padding-bottom: 30px; text-align: center;'><h1 style='color: white;'>#{@invite.event.title}</h1></div>
+    msg = "<html><body><div style='background-image: url(#{@invite.event.image}); padding-top: 30px; padding-bottom: 30px; text-align: center;'><h1 style='color: white;'>we are meetups</h1></div>
           <br>Dear guest,<br><br>You have been invited by #{@invited_by} to attend our next exciting networking event.<br>
           <h1>#{@invite.event.title}</h1>
           At:<strong> #{@invite.event.location}, #{@invite.event.postcode}</strong><br>

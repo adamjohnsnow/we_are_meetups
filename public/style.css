@@ -78,8 +78,29 @@
 }
  .rsvp{
 	 padding: 2px 2px 12px 2px;
-	 background-color: #efefef;
+	 background-color: #F6F3EB;
 	 margin-top: 8px;
 	 margin-bottom: 8px;
 	 text-align: center;
+ }
+ .button {
+     border: none;
+     color: white;
+     padding: 8px 20px;
+     text-align: center;
+     text-decoration: none;
+     display: inline-block;
+     font-size: 16px;
+     margin: 4px 2px;
+     -webkit-transition-duration: 0.2s; /* Safari */
+     transition-duration: 0.2s;
+     cursor: pointer;
+     background-color: white;
+     color: black;
+     border: 2px solid #008CBA;
+ }
+
+ .button:hover {
+     background-color: #008CBA;
+     color: white;
  }
