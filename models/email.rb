@@ -29,7 +29,7 @@ attr_reader :status
     else
       @invited_by = @invite.invited_by
     end
-
+    invite_url = '\"' + ENV['WEBSITE_URL'] + '/login?invite=' + @invite.id.to_s + '\"'
     msg = "<html><body><div style='background-image: url(#{@invite.event.image}); padding-top: 30px; padding-bottom: 30px; text-align: center;'><h1 style='color: white;'>we are meetups</h1></div>
           <br>Dear guest,<br><br>You have been invited by #{@invited_by} to attend our next exciting networking event.<br>
           <h2 style='text-transform: uppercase;'>#{@invite.event.title}</h2>
@@ -38,11 +38,11 @@ attr_reader :status
           <br><br><i>#{@invite.event.description}</i><br><br>
           <strong>#{@invited_by} said that they have invited you because:</strong><br>
           <i>'#{@invite.reason}'</i><br>
-          <strong>Please respond by following <a href='#{ENV['WEBSITE_URL']}/login?invite=#{@invite.id}'>this link</a> or logging into <a href='#{ENV['WEBSITE_URL']}/login?guest=#{@invite.invitee.id}'>your account</a> via LinkedIn</strong>
+          <strong>Please respond by following <a href=\"#{ENV['WEBSITE_URL']}/login?invite=i#{@invite.id.to_s}\">this link</a> or logging into <a href='#{ENV['WEBSITE_URL']}/login?guest=g#{@invite.invitee.id}'>your account</a> via LinkedIn</strong>
           <br><br>
           Kindest regards,<br><br>
           <strong>the we are meetups team</strong></body></html>"
-
+          p msg
     send_email(@invite.invitee.email, subject, msg)
   end
 

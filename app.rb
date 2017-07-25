@@ -133,17 +133,20 @@ class MarketingSuperstore < Sinatra::Base
     redirect '/invite'
   end
   private
+
   def accept_invite(invite)
     invite.update(response: 'Declined')
     invite.save!
   end
+
   def update_session(params)
     if params[:invite]
-      session[:invite_id] = params[:invite]
-      session[:guest_id] = Invite.get(params[:invite]).invitee.id
+      invite_id = params[:invite].gsub('i','').to_i
+      session[:invite_id] = invite_id
+      session[:guest_id] = Invite.get(invite_id).invitee.id
       update_invite
     elsif params[:guest]
-      session[:guest_id] = params[:guest]
+      session[:guest_id] = params[:guest].gsub('g','').to_i
       session[:invite_id] = nil
     else
       session[:invite_id] = nil
