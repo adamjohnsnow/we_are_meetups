@@ -38,11 +38,7 @@
 }
 
 .admin-header{
-	background: #ffc578;
-	background: -moz-linear-gradient(-45deg, #ffc578 0%, #b8d378 33%, #f28a8a 46%, #fb9d23 100%);
-	background: -webkit-linear-gradient(-45deg, #ffc578 0%,#b8d378 33%,#f28a8a 46%,#fb9d23 100%);
-	background: linear-gradient(135deg, #ffc578 0%,#b8d378 33%,#f28a8a 46%,#fb9d23 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffc578', endColorstr='#fb9d23',GradientType=1 );
+	background: #0084BF;
 	height: 60px;
 	margin-bottom: 30px;
 	color: white;
@@ -79,7 +75,7 @@
 }
  .rsvp{
 	 padding: 2px 2px 12px 2px;
-	 background-color: #F6F3EB;
+	 background-color: #e6f7ff;
 	 margin-top: 8px;
 	 margin-bottom: 8px;
 	 text-align: center;
@@ -96,12 +92,20 @@
      -webkit-transition-duration: 0.2s; /* Safari */
      transition-duration: 0.2s;
      cursor: pointer;
-     background-color: white;
-     color: black;
+     background-color: #0084BF;
+     color: white;
      border: 2px solid #008CBA;
  }
 
  .button:hover {
-     background-color: #008CBA;
-     color: white;
+     background-color: white;
+     color: #0084BF;
  }
+.logo-nav{
+	padding-top: 5px;
+	padding-left: 5px;
+	text-align: left;
+}
+.linkedin {
+	background-color: #0084BF;
+}
