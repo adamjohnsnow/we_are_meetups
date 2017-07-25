@@ -14,11 +14,11 @@
 <body>
   <h3>guest list</h3>
 <% @invites.each do |invite| %>
-<div class="container white">
- <div class="col-sm-2 photo"><img src="<%= invite.invitee.linkedin_profile_pic %>" width="120"></div>
+<div class="container guestlist">
+ <div class="col-sm-3 photo"><img src="<%= invite.invitee.linkedin_profile_pic %>" width="120"><br>
  <a href="<%= invite.invitee.linkedin_url %>">linkedin profile</a>
-
- <div class="col-sm-10">
+</div>
+ <div class="col-sm-9">
    <strong><%= invite.invitee.first_name %> <%= invite.invitee.last_name %></strong> -
    <%= invite.invitee.linkedin_headline %><br>
    <%= invite.invited_by %> said that they invited <%= invite.invitee.first_name %> because:<br>

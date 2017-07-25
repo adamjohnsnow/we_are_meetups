@@ -1,23 +1,6 @@
-.table{
-	display: table;
-}
-.table-row {
-  border: 1px solid #e3e3e3;
-	display: table-row;
-}
-.table-cell {
-	display: table-cell;
-	padding: 6px 6px 6px 6px;
-  vertical-align: top;
-}
-.table-body {
-	display: table-row-group;
-}
 
 .photo {
   width: 70px;
-  text-align: right;
-	vertical-align: middle;
 }
 
 .invite {
@@ -58,7 +41,11 @@
 }
 
 .white{
-	background-color: white;
+	padding: 5px 5px 5px 5px;
+	margin-top: 5px;
+}
+.guestlist{
+	border-bottom: 0.5px solid #0084BF;
 	padding: 5px 5px 5px 5px;
 	margin-top: 5px;
 }
