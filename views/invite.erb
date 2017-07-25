@@ -19,7 +19,7 @@
         <i> <%= @invite.event.description %> </i><br>
         <div class="flash"><%= flash[:notice] %></div>
         <div class="rsvp">
-        <strong>Your RSVP</strong>
+        <strong>your invite</strong>
         <% if @invite.response == 'Invite Received' ||  @invite.response == 'Invite Sent' %>
         <form action="/rsvp" method="post">
           <input type="hidden" name="invitee_id" value="<%= @invite.invitee.id %>">
