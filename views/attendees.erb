@@ -1,4 +1,4 @@
-<div class="admin-header">admin home</div>
+<img src="assets/banner-inverse.jpg" height="250">
 <a href="/admin-manage?id=<%= @invites.first.event.id %>"><h2><%= @invites.first.event.title %></h2></a>
 <h3><%= @invites.first.event.date.strftime("%d/%m/%Y") %> - <%= @invites.first.event.time.strftime("%H:%M")%>-<%= @invites.first.event.end.strftime("%H:%M")%></h3>
  <% @invites.each do |invite| %>
