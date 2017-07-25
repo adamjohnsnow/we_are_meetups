@@ -17,36 +17,37 @@
         <h3><%= @invite.event.title %></h3>
         <h4>event description</h4>
         <i> <%= @invite.event.description %> </i><br>
-        <h4>your rsvp</h4>
+        <div class="flash"><%= flash[:notice] %></div>
+        <div class="rsvp">
+        <h4>Your RSVP</h4>
         <% if @invite.response == 'Invite Received' ||  @invite.response == 'Invite Sent' %>
         <form action="/rsvp" method="post">
           <input type="hidden" name="invitee_id" value="<%= @invite.invitee.id %>">
           <input type="hidden" name="event_id" value="<%= @invite.event.id %>">
-          <input type="radio" name="rsvp" value="Accepted"> i accept</input><br>
+          <input type="radio" name="rsvp" value="Accepted"> Accept</input><br>
           <% if @invite.type == 'primary' %>
-          <i>as a primary invitee to this event, please bring a guest!</i><br>
-          <div class="flash"><%= flash[:notice] %></div>
-          <div class="row">
-            <input class="input-sm" type="email" name="email" size="55" placeholder="To accept this invitation, enter your guests email address"><br>
-            <p><textarea class="input-sm" name="reason" cols="54" rows="3" placeholder="I am inviting [name] because..."></textarea></p>
-          </div>
+          <p><i>As a primary invitee to this event, please bring a guest!</i></p>
+
+            <input class="form-control" type="email" name="email" size="55" placeholder="Your guests email address">
+            <p><textarea class="form-control" name="reason" cols="54" rows="3" placeholder="I am inviting [name] because..."></textarea></p>
+
           <% end %>
-          <input type="radio" name="rsvp" value="Declined"> i decline</input><br><br>
+          <input type="radio" name="rsvp" value="Declined"> Decline</input><br><br>
           <input class="btn" type="submit" value="Send my RSVP">
         </form>
         <% else %>
-        <br><strong><%= @invite.response %></strong><br>
+        <strong><%= @invite.response %></strong><br>
         <% end %>
-        send a question<br>
+      </div>
+
+        Ask a question about this event<br>
           <form action="/question" method="post">
             <input type="hidden" name="guest" value="<%= @invite.invitee.id %>">
             <input type="hidden" name="event" value="<%= @invite.event.id %>">
-            <div class="row">
-              <textarea class="input-sm" name="message" cols="54" rows="3"></textarea><br>
-            </div>
-            <input class="btn" type="submit" value="send message">
+            <textarea class="form-control" name="message" cols="54" rows="3" placeholder="ask your question here..."></textarea>
+            <input class="btn" type="submit" value="send question">
           </form>
-      </div>
+      </div><br />
       <div class="col-sm-6">
             <h4>date & time</h4>
             <%= @invite.event.date.strftime("%A %-d %B") %> at <%= @invite.event.time.strftime("%H:%M") %>-<%= @invite.event.end.strftime("%H:%M") %><br>

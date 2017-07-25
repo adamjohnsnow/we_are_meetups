@@ -21,7 +21,7 @@ class Event
   def send_email
     @send_to = Invite.all(:event_id => self.id, :response => 'Invite not sent')
     @send_to.each do |invite|
-      email = Email.send(invite.id)
+      email = Email.invitation(invite.id)
       email.status == "250" ? invite.response = 'Invite Sent' : invite.response = 'Invite failed to send'
       invite.save!
     end

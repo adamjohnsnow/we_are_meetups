@@ -6,9 +6,23 @@ require 'mail'
 class Email
 attr_reader :status
 
-  def self.send(invite_id)
+
+  def self.send_email(email, subject, message)
+
+    mail = Mailit::Mail.new
+    mail.to = email
+    mail.from = "#{ENV['EMAIL_ADDRESS']}"
+    mail.subject = subject
+    mail.html = message
+
+    mailer = Mailit::Mailer.new
+
+    mailer.send(mail, :server => 'smtp.123-reg.co.uk', :port => ENV['SMTP_PORT'],
+      :domain => '123-reg.co.uk', :password => ENV['EMAIL_PASSWORD'])
+    end
+
+  def self.invitation(invite_id)
     @invite = Invite.get(invite_id)
-    @reply_url = ENV['WEBSITE_URL']
     subject = 'You have been invited to our next exciting event!'
     if @invite.invited_by.to_i > 0
       @invited_by = Invitee.get(@invite.invited_by.to_i).first_name + " " + Invitee.get(@invite.invited_by.to_i).last_name
@@ -16,7 +30,8 @@ attr_reader :status
       @invited_by = @invite.invited_by
     end
 
-    msg = "<html><body><div style='background-image: url(#{@invite.event.image}); padding-top: 100px;'></div> Dear guest,<br><br>You have been invited by #{@invited_by} to attend our next exciting networking event.<br>
+    msg = "<html><body><div style='background-image: url(#{@invite.event.image}); padding-top: 30px; padding-bottom: 30px; text-align: center;'><h1 style='color: white;'>#{@invite.event.title}</h1></div>
+          <br>Dear guest,<br><br>You have been invited by #{@invited_by} to attend our next exciting networking event.<br>
           <h1>#{@invite.event.title}</h1>
           At:<strong> #{@invite.event.location}, #{@invite.event.postcode}</strong><br>
           on #{@invite.event.date.strftime('%A %-d %B')} from #{@invite.event.time.strftime('%H:%M')} to #{@invite.event.end.strftime('%H:%M')}
@@ -59,37 +74,4 @@ attr_reader :status
     send_email(ENV['EMAIL_ADDRESS'], subject, msg)
   end
 
-  def self.send_email(email, subject, message)
-
-    mail = Mailit::Mail.new
-    mail.to = email
-    mail.from = "#{ENV['EMAIL_ADDRESS']}"
-    mail.subject = subject
-    mail.html = message
-
-    mailer = Mailit::Mailer.new
-
-    mailer.send(mail, :server => 'smtp.123-reg.co.uk', :port => ENV['SMTP_PORT'],
-      :domain => '123-reg.co.uk', :password => ENV['EMAIL_PASSWORD'])
-    end
-  def self.test_send(port)
-
-      options = { :address              => 'smtp.123-reg.co.uk',
-                  :port                 => port,
-                  :domain               => '123-reg.co.uk',
-                  :user_name            => ENV['EMAIL_ADDRESS'],
-                  :password             => ENV['EMAIL_PASSWORD'],
-                  :authentication       => 'login' }
-       Mail.defaults do
-        delivery_method :smtp, options
-      end
-      p options
-       mail = Mail.new do
-            from ENV['EMAIL_ADDRESS']
-              to 'adamjohnsnow@icloud.com'
-         subject 'This is a test email'
-            body 'test'
-       end
-      mail.deliver!
-  end
 end

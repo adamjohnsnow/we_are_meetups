@@ -28,8 +28,6 @@ class Invite
 
   def self.add_secondary(params, invite_id)
     response = Invite.get(invite_id)
-    response.update(response: params[:rsvp])
-    response.save!
 
     if response.type == 'primary'
       @guest = Invitee.first_or_create(:email => params[:email])
@@ -43,9 +41,12 @@ class Invite
           type: "secondary",
           sent_to: params[:email]
           )
-        Email.send(@invite.id)
+        Email.invitation(@invite.id)
+        response.update(response: params[:rsvp])
+        response.save!
+        return :ok
       else
-        p 'already invited'
+        return :fail
       end
     end
   end

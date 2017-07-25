@@ -33,27 +33,13 @@ class MarketingSuperstore < Sinatra::Base
   end
 
   get '/login' do
-    if params[:invite]
-      session[:invite_id] = params[:invite]
-      session[:guest_id] = Invite.get(params[:invite]).invitee.id
-      update_invite
-    elsif params[:guest]
-      session[:guest_id] = params[:guest]
-      session[:invite_id] = nil
-    else
-      session[:invite_id] = nil
-      session[:guest_id] = nil
-    end
+    update_session(params)
     oauth = get_oauth
     redirect oauth.auth_code_url
   end
 
   get '/login/callback' do
-    token = get_token(params[:code])
-    @api = LinkedIn::API.new(token)
-    email_query = LinkedInAuth::EMAIL_QUERY + token.token + "&format=json"
-    response = JSON.parse(open(email_query).read)
-    update_invitee_record(@api, response["emailAddress"])
+    get_linkedin_data(params[:code])
     if session[:invite_id] == nil
       redirect '/home'
     else
@@ -91,11 +77,13 @@ class MarketingSuperstore < Sinatra::Base
       invite.save!
       else
       if Invite.get(session[:invite_id]).type == 'primary' && params[:guest_email] == ""
-        flash.next[:notice] = 'As a primary guest, you must invite another attendee by providing their email<br>'
+        warning = 'As a primary guest, you must invite another attendee by providing their email'
       else
-        Invite.add_secondary(params, session[:invite_id])
+        sent = Invite.add_secondary(params, session[:invite_id])
+        sent == :ok ? warning = "Thank you for your response" : warning = "That guest could not be invited, please try again"
       end
     end
+    warning ? flash.next[:notice] = warning : flash.next[:notice] = "Thank you for your response"
     redirect '/invite'
   end
 
@@ -137,9 +125,33 @@ class MarketingSuperstore < Sinatra::Base
     event = Event.get(params[:event]).title
     guest = Invitee.get(params[:guest])
     Email.question(event, guest, params[:message])
+    flash.next[:notice] = "Your question has been sent"
     redirect '/invite'
   end
   private
+
+  def update_session(params)
+    if params[:invite]
+      session[:invite_id] = params[:invite]
+      session[:guest_id] = Invite.get(params[:invite]).invitee.id
+      update_invite
+    elsif params[:guest]
+      session[:guest_id] = params[:guest]
+      session[:invite_id] = nil
+    else
+      session[:invite_id] = nil
+      session[:guest_id] = nil
+    end
+  end
+
+  def get_linkedin_data(code)
+    token = get_token(code)
+    @api = LinkedIn::API.new(token)
+    email_query = LinkedInAuth::EMAIL_QUERY + token.token + "&format=json"
+    response = JSON.parse(open(email_query).read)
+    update_invitee_record(@api, response["emailAddress"])
+  end
+
   def update_invite
       @invite = Invite.get(session[:invite_id])
       @invite.update(response: 'Invite Received') if @invite.response == 'Invite Sent'
