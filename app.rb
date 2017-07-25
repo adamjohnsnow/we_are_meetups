@@ -75,13 +75,11 @@ class MarketingSuperstore < Sinatra::Base
       invite = Invite.get(session[:invite_id])
       invite.update(response: 'Declined')
       invite.save!
-      else
-      if Invite.get(session[:invite_id]).type == 'primary' && params[:guest_email] == ""
-        warning = 'As a primary guest, you must invite another attendee by providing their email'
-      else
-        sent = Invite.add_secondary(params, session[:invite_id])
-        sent == :ok ? warning = "Thank you for your response" : warning = "That guest could not be invited, please try again"
-      end
+    elsif Invite.get(session[:invite_id]).type == 'primary' && params[:guest_email] == ""
+      warning = 'As a primary guest, you must invite another attendee by providing their email'
+    elsif Invite.get(session[:invite_id]).type == 'primary'
+      sent = Invite.add_secondary(params, session[:invite_id])
+      sent == :ok ? warning = "Thank you for your response" : warning = "That guest could not be invited, please try again"
     end
     warning ? flash.next[:notice] = warning : flash.next[:notice] = "Thank you for your response"
     redirect '/invite'

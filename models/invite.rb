@@ -27,27 +27,23 @@ class Invite
   end
 
   def self.add_secondary(params, invite_id)
-    response = Invite.get(invite_id)
-
-    if response.type == 'primary'
-      @guest = Invitee.first_or_create(:email => params[:email])
-      if @guest.invites(:event_id => params[:event_id]) == []
-        @invite = Invite.create(
-          invitee_id: @guest.id,
-          event_id: params[:event_id],
-          reason: params[:reason],
-          response: 'Invite Sent',
-          invited_by: params[:invitee_id],
-          type: "secondary",
-          sent_to: params[:email]
-          )
-        Email.invitation(@invite.id)
-        response.update(response: params[:rsvp])
-        response.save!
-        return :ok
-      else
-        return :fail
-      end
+    @guest = Invitee.first_or_create(:email => params[:email])
+    if @guest.invites(:event_id => params[:event_id]) == []
+      @invite = Invite.create(
+        invitee_id: @guest.id,
+        event_id: params[:event_id],
+        reason: params[:reason],
+        response: 'Invite Sent',
+        invited_by: params[:invitee_id],
+        type: "secondary",
+        sent_to: params[:email]
+        )
+      Email.invitation(@invite.id)
+      response.update(response: params[:rsvp])
+      response.save!
+      return :ok
+    else
+      return :fail
     end
   end
 
