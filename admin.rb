@@ -107,6 +107,7 @@ class AdminRoutes < Sinatra::Base
     invite = Invite.get(params[:id])
     invite.response = 'Attended'
     invite.save!
+    Email.attended(invite.event, invite.invitee)
     redirect '/attendees?id=' + invite.event_id.to_s
   end
   private

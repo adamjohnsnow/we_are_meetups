@@ -74,4 +74,18 @@ attr_reader :status
     send_email(ENV['EMAIL_ADDRESS'], subject, msg)
   end
 
+  def self.attended(event, guest)
+    subject = "Thank you for attending #{event.title}"
+    msg = "<html><div style='background-image: url(#{event.image}); padding-top: 30px; padding-bottom: 30px; text-align: center;'><h1 style='color: white;'>we are meetups</h1></div>
+    <h1>#{event.title}</h1>
+    Dear #{guest.first_name},<br><br>
+    Thank you for attending our recent event, #{event.title}.<br><br>
+    If you wish to connect with any of the other attendees you met there,
+      <a href='#{ENV['WEBSITE_URL']}'>log in to your account</a> to see guest lists events you have attended.<br>
+      We look forward to seeing you at another of our events soon!<br><br>
+    Kindest regards,<br>
+    <h3>the we are meetups team</h3></html>"
+    send_email(guest.email, subject, msg)
+  end
+
 end

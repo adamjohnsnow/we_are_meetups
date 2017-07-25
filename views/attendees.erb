@@ -23,7 +23,7 @@
     <% if invite.response != "Attended" %>
     <form action="/mark-attended" method="post">
       <input type="hidden" value="<%= invite.id %>" name="<%= :id %>">
-      <input type="submit" value="Mark attended">
+      <input class="button" type="submit" value="Mark attended">
     </form>
     <% end %>
   </div>
