@@ -2,7 +2,7 @@
 <div class="container white">
 
   <% if @invites.count > 0 %>
-  <h3> your invites </h3>
+  <h3> your invitations </h3>
     <% @invites.each do |invite| %>
         <a href="/invites?id=<%= invite.id%>">
       <div class="col-lg-12 invite-list" style="background-image: url(<%= invite.event.image %>)">
