@@ -71,17 +71,23 @@ class MarketingSuperstore < Sinatra::Base
   end
 
   post '/rsvp' do
+    invite = Invite.get(session[:invite_id])
     if params[:rsvp] == 'Declined'
       invite = Invite.get(session[:invite_id])
       invite.update(response: 'Declined')
       invite.save!
-    elsif Invite.get(session[:invite_id]).type == 'primary' && params[:guest_email] == ""
+    elsif invite.type == 'primary' && params[:guest_email] == ""
       warning = 'As a primary guest, you must invite another attendee by providing their email'
-    elsif Invite.get(session[:invite_id]).type == 'primary'
+    elsif invite.type == 'primary'
       sent = Invite.add_secondary(params, session[:invite_id])
       sent == :ok ? warning = "Thank you for your response" : warning = "That guest could not be invited, please try again"
     end
-    warning ? flash.next[:notice] = warning : flash.next[:notice] = "Thank you for your response"
+    if warning
+      flash.next[:notice] = warning
+    else
+      accept_invite(invite)
+      flash.next[:notice] = "Thank you for your response"
+    end
     redirect '/invite'
   end
 
@@ -127,7 +133,10 @@ class MarketingSuperstore < Sinatra::Base
     redirect '/invite'
   end
   private
-
+  def accept_invite(invite)
+    invite.update(response: 'Declined')
+    invite.save!
+  end
   def update_session(params)
     if params[:invite]
       session[:invite_id] = params[:invite]

@@ -27,6 +27,7 @@ class Invite
   end
 
   def self.add_secondary(params, invite_id)
+    response = Invite.get(invite_id)
     @guest = Invitee.first_or_create(:email => params[:email])
     if @guest.invites(:event_id => params[:event_id]) == []
       @invite = Invite.create(
