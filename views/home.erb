@@ -5,7 +5,7 @@
                 <div class="page-heading">
                     <h1>we are meetups</h1>
                     <hr class="small">
-                    <span class="subheading">hello, <%= @user.first_name %> <%= @user.last_name %></span>
+                    <span class="subheading">hello <%= @user.first_name %> <%= @user.last_name %></span>
                 </div>
             </div>
         </div>
@@ -29,16 +29,14 @@
       <br>
     <% end%>
   <% else %>
-  you don't currently have any invitations<br> register your interest in future events by sending us a message <a href="/contact">here</a>
+  You don't currently have any invitations<br> Register your interest in future events by sending us a message <a href="/contact">here</a>
   <% end %>
 </div>
-<div class="container white">
 
   <% if @past_invites.count > 0 %>
+  <div class="container white">
   <h3> attended events </h3>
     <% @past_invites.each do |invite| %>
-
-
         <a href="/guest-list?id=<%= invite.event.id %>">
       <div class="col-lg-12 invite-list" style="background-image: url(<%= invite.event.image %>)">
         <span class="title"><%= invite.event.title %></span><br>
@@ -46,8 +44,6 @@
       <br><br><br></div></a>
       <br>
     <% end%>
-  <% else %>
-  you haven't attended any events yet
-  <% end %>
 </div>
+<% end %>
 </body>
