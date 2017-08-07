@@ -135,7 +135,7 @@ class MarketingSuperstore < Sinatra::Base
   private
 
   def accept_invite(invite)
-    invite.update(response: 'Declined')
+    invite.update(response: 'Accepted')
     invite.save!
   end
 
